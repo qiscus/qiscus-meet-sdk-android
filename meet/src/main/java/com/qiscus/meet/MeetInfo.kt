@@ -1,10 +1,6 @@
 package com.qiscus.meet
 
 import android.content.Context
-import android.content.Intent
-import android.util.Log
-import com.qiscus.meet.model.Call
-import org.jitsi.meet.sdk.JitsiMeetActivity
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
 
 /**
@@ -43,18 +39,18 @@ class MeetInfo {
     fun setCallAs(callAs: QiscusMeet.CallAs) = apply { this.callAs = callAs }
 
     fun build(context: Context) {
-        if(callAs == QiscusMeet.CallAs.CALLEE) {
-            val call = Call(roomId,calleeUsername, calleeDisplayName, calleeAvatar,
-                callerUsername, callerDisplayName, callerAvatar, callType, callAs)
-            val intent = IncomingCallActivity.generateIntent(context, call)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            context.startActivity(intent)
-        } else {
+//        if(callAs == QiscusMeet.CallAs.CALLEE) {
+//            val call = Call(roomId,calleeUsername, calleeDisplayName, calleeAvatar,
+//                callerUsername, callerDisplayName, callerAvatar, callType, callAs)
+//            val intent = IncomingCallActivity.generateIntent(context, call)
+//            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+//            context.startActivity(intent)
+//        } else {
             val options = JitsiMeetConferenceOptions.Builder()
                     .setRoom(roomId)
                     .build()
 
             QiscusMeetActivity.launch(context, options)
-        }
+//        }
     }
 }
