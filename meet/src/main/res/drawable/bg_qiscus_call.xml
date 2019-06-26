@@ -1,0 +1,11 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <gradient
+                android:angle="270"
+                android:startColor="#DD0B2138"
+                android:endColor="@color/qiscus_call_bg_default"
+                android:type="linear" />
+        </shape>
+    </item>
+</selector>
