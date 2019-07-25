@@ -1,6 +1,7 @@
 package com.qiscus.meet
 
 import android.content.Context
+import org.jitsi.meet.sdk.JitsiMeetActivity
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
 
 /**
@@ -50,7 +51,7 @@ class MeetInfo {
                     .setRoom(roomId)
                     .build()
 
-            QiscusMeetActivity.launch(context, options)
+            JitsiMeetActivity.launch(context, options)
 //        }
     }
 }

@@ -1,14 +1,12 @@
 package com.qiscus.meet
 
-import android.content.Intent
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
-import android.util.Log
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.jitsi.meet.sdk.*
-import org.jitsi.meet.sdk.R
 
 
 /**
@@ -19,19 +17,23 @@ import org.jitsi.meet.sdk.R
 class QiscusMeetActivity : JitsiMeetActivity() {
 
     val TAG = this.javaClass.simpleName
+    lateinit var roomId: String
 
     companion object {
-        fun launch(context: Context, options: JitsiMeetConferenceOptions?) {
+        val room = "roomid"
+
+        fun launch(context: Context, options: JitsiMeetConferenceOptions?, roomid: String) {
             val intent = Intent(context, QiscusMeetActivity::class.java)
-            intent.action = JitsiMeetActivity.ACTION_JITSI_MEET_CONFERENCE
-            intent.putExtra(JitsiMeetActivity.JITSI_MEET_CONFERENCE_OPTIONS, options)
+            intent.action = ACTION_JITSI_MEET_CONFERENCE
+            intent.putExtra(JITSI_MEET_CONFERENCE_OPTIONS, options)
+            intent.putExtra(room, roomid)
             context.startActivity(intent)
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
-
+        roomId = intent.getStringExtra(room)
     }
 
     override fun onStart() {
@@ -48,7 +50,7 @@ class QiscusMeetActivity : JitsiMeetActivity() {
 
     @Subscribe
     fun onReceivedEvent(meetEvent : MeetEvent) {
-        if(meetEvent.event == QiscusMeet.QiscusMeetEvent.REJECTED) {
+        if(meetEvent.event == QiscusMeet.QiscusMeetEvent.REJECTED && meetEvent.roomId == roomId) {
             jitsiView?.leave()
         }
     }

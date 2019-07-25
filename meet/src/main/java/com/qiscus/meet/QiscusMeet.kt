@@ -46,8 +46,8 @@ class QiscusMeet {
         }
 
         @JvmStatic
-        fun event(event: QiscusMeetEvent) {
-            EventBus.getDefault().post(MeetEvent(event))
+        fun event(event: QiscusMeetEvent, roomId: String) {
+            EventBus.getDefault().post(MeetEvent(roomId, event))
         }
     }
 

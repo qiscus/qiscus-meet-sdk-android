@@ -20,8 +20,7 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven { url "/home/qiscus/project/qiscus-meet/dependencies" }
-        maven { url "https://artifactory.qiscus.com/artifactory/qiscus-library-open-source" }
+        maven { url "https://artifactory.qiscus.com/artifactory/qiscus-meet" }
         maven { url "https://dl.bintray.com/qiscustech/maven" }
     }
 }

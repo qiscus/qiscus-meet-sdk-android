@@ -5,4 +5,4 @@ package com.qiscus.meet
  * Author     : Taufik Budi S
  * GitHub     : https://github.com/tfkbudi
  */
-data class MeetEvent(val event: QiscusMeet.QiscusMeetEvent)
+data class MeetEvent(val roomId: String ,val event: QiscusMeet.QiscusMeetEvent)
