@@ -12,6 +12,6 @@ class Apps: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        QiscusMeet.init(this, "https://meet.qiscus.com")
+        QiscusMeet.init(this, "https://meetx.qiscus.com")
     }
 }

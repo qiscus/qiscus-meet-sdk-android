@@ -2,8 +2,6 @@ package com.qiscus.meetSdk
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import com.qiscus.meet.MeetInfo
 import com.qiscus.meet.QiscusMeet
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -18,7 +16,7 @@ class MainActivity : AppCompatActivity() {
             if (room.isNotEmpty()) {
                 QiscusMeet.launch()
                     .setRoomId(room)
-                    .setCallerUsername("budi")
+                    .setType(QiscusMeet.Type.VIDEO)
                     .build(this)
             }
 

@@ -51,12 +51,8 @@ class QiscusMeet {
         }
     }
 
-    enum class CallType {
+    enum class Type {
         VOICE, VIDEO
-    }
-
-    enum class CallAs {
-        CALLEE, CALLER
     }
 
     enum class QiscusMeetEvent{
