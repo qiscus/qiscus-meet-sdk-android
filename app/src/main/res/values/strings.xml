@@ -1,7 +1,9 @@
 <resources>
-    <string name="app_name">Meet</string>
-    <string name="txt_user_1">Login as User 1</string>
-    <string name="txt_user_2">Login as User 2</string>
-    <string name="txt_open_chat">Open chat</string>
-    <string name="txt_logout">Log out</string>
+    <string name="app_name">Qiscus RTC SDK Sample</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_call">CallActivity</string>
+    <string name="title_activity_chat">ChatActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
