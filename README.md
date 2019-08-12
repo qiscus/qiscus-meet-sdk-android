@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Qiscus Meet is a product provide by Qiscus as a solution for conference call. You can make a conference call up to 30 participants. Qiscus Meet build on top Jitsi Open Source. There are several features that are provided by Qiscus Meet to call conference related matter
+Qiscus Meet is a product provide by Qiscus as a solution for conference call. You can make a conference call up to 5 participants. Qiscus Meet build on top Jitsi Open Source. There are several features that are provided by Qiscus Meet to call conference related matter
 
 ## Requirements
 
