@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Qiscus RTC SDK Sample</string>
+    <string name="app_name">Qiscus Meet sample</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_call">CallActivity</string>
     <string name="title_activity_chat">ChatActivity</string>

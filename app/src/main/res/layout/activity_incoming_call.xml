@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:padding="32dp">
 
-    <com.qiscus.meet.widget.QiscusCircularImageView
+    <com.qiscus.rtc.sample.utils.QiscusCircularImageView
         android:id="@+id/iv_caller_avatar"
         android:layout_width="128dp"
         android:layout_height="128dp"
