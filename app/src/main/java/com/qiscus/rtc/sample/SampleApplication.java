@@ -116,28 +116,14 @@ public class SampleApplication extends Application {
 
                         if (Qiscus.getQiscusAccount().getEmail().equals(callee_email)) {
                             Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
+                            handler.postDelayed(() -> {
 
-//                                    QiscusPusherApi.getInstance().listenEvent(Long.parseLong(roomId));
-
-//                                    QiscusMeet.launch()
-//                                            .setRoomId(roomId)
-//                                            .setCallAs(QiscusMeet.CallAs.CALLEE)
-//                                            .setCalleeUsername(callee_email)
-//                                            .setCallerUsername(caller_email)
-//                                            .setCallerDisplayName(caller_name)
-//                                            .setCallerAvatar(caller_avatar)
-//                                            .build(getApplicationContext());
-
-                                    Intent intent = new Intent(getApplicationContext(), IncomingCallActivity.class);
-                                    intent.putExtra("callerAvatar", caller_avatar);
-                                    intent.putExtra("callerDisplayName", caller_name);
-                                    intent.putExtra("roomId", roomId);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    startActivity(intent);
-                                }
+                                Intent intent = new Intent(getApplicationContext(), IncomingCallActivity.class);
+                                intent.putExtra("callerAvatar", caller_avatar);
+                                intent.putExtra("callerDisplayName", caller_name);
+                                intent.putExtra("roomId", roomId);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
                             }, 2500);
                         }
                         break;

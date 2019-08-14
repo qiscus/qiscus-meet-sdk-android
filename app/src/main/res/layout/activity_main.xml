@@ -19,12 +19,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <Button
-        android:id="@+id/btn_queue_routing"
-        android:text="Queue and Routing"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"/>
-    <Button
         android:id="@+id/btn_logout"
         android:text="Logout"
         android:layout_width="match_parent"

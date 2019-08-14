@@ -39,10 +39,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".simple.LoginActivity"
-            android:label="@string/title_activity_login"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".simple.CallActivity"
             android:label="@string/title_activity_call"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -63,7 +59,6 @@
                     android:scheme="qiscus" />
             </intent-filter>
         </activity>
-        <activity android:name=".routing.RoutingActivity" />
     </application>
 
 </manifest>
