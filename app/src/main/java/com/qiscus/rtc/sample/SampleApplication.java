@@ -49,7 +49,7 @@ public class SampleApplication extends Application {
             EventBus.getDefault().register(this);
         }
 
-        QiscusMeet.init(this,"https://meetx.qiscus.com");
+        QiscusMeet.init(this,"https://meet.qiscus.com");
     }
 
     public static SampleApplication getInstance() {
