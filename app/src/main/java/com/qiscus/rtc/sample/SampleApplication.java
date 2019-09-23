@@ -1,8 +1,8 @@
 package com.qiscus.rtc.sample;
 
-import android.app.Application;
 import android.content.Intent;
 import android.os.Handler;
+import android.support.multidex.MultiDexApplication;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
@@ -24,7 +24,7 @@ import org.json.JSONObject;
  * Created by fitra on 04/10/17.
  */
 
-public class SampleApplication extends Application {
+public class SampleApplication extends MultiDexApplication {
 
     private static SampleApplication instance;
     private AppComponent component;

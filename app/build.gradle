@@ -4,10 +4,11 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.qiscus.rtc.sample"
-        minSdkVersion 21
+        minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
         versionName "0.0.6"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -29,6 +30,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.qiscus.sdk:chat:2.30.11'
-//    implementation 'com.qiscus.meet:meet-sdk:0.0.5'
-    implementation project(':meet')
+    implementation 'com.qiscus.meet:meet-sdk-alpha:0.0.3'
+    implementation 'com.android.support:multidex:1.0.3'
+//    implementation project(':meet')
 }
