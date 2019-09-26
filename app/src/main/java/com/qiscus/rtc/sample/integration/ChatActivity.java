@@ -134,6 +134,7 @@ public class ChatActivity extends QiscusBaseChatActivity {
                     if (objStream.getInt("status") == 200) {
                         QiscusMeet.launch()
                                 .setRoomId(roomId)
+                                .setDisplayName(Qiscus.getQiscusAccount().getUsername())
                                 .build(ChatActivity.this);
                     }
                 } catch (JSONException e) {

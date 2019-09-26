@@ -9,10 +9,18 @@
     tools:context=".simple.SimpleCall">
 
     <EditText
+        android:id="@+id/et_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:hint="Name" />
+
+    <EditText
         android:id="@+id/et_room"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:layout_below="@+id/et_name"
         android:hint="Room id"/>
 
     <Button

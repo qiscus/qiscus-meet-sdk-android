@@ -13,6 +13,7 @@ public class SimpleCall extends AppCompatActivity {
 
     private Button btnStart;
     private EditText etRoomId;
+    private EditText etName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +22,7 @@ public class SimpleCall extends AppCompatActivity {
 
         btnStart = findViewById(R.id.btn_start);
         etRoomId = findViewById(R.id.et_room);
+        etName = findViewById(R.id.et_name);
 
         btnStart.setOnClickListener(v-> {
             startCall();
@@ -29,6 +31,14 @@ public class SimpleCall extends AppCompatActivity {
 
     private void startCall() {
         String roomId = etRoomId.getText().toString();
+        String name = etName.getText().toString();
+        //hardcoded avatar
+        String avatar = "https://dw9to29mmj727.cloudfront.net/misc/newsletter-naruto3.png";
+
+        if(name.length() == 0) {
+            Toast.makeText(this, "Name required", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         if(roomId.length() == 0) {
             Toast.makeText(this, "room id required", Toast.LENGTH_SHORT).show();
@@ -37,6 +47,8 @@ public class SimpleCall extends AppCompatActivity {
 
         QiscusMeet.launch()
                 .setRoomId(roomId)
+                .setDisplayName(name)
+                .setAvatar(avatar)
                 .build(this);
     }
 }

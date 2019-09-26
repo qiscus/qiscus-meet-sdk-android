@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.qiscus.meet.QiscusMeet;
 import com.qiscus.rtc.sample.R;
+import com.qiscus.sdk.Qiscus;
 import com.qiscus.sdk.chat.core.data.remote.QiscusPusherApi;
 
 import org.json.JSONObject;
@@ -51,6 +52,7 @@ public class IncomingCallActivity extends AppCompatActivity {
     private void onAccept() {
         QiscusMeet.launch()
                 .setRoomId(roomId)
+                .setDisplayName(Qiscus.getQiscusAccount().getUsername())
                 .build(this);
 
         finish();
