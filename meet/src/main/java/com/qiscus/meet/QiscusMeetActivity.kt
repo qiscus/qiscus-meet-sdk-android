@@ -38,19 +38,20 @@ class QiscusMeetActivity : JitsiMeetActivity() {
 
     override fun onStart() {
         super.onStart()
-        if(!EventBus.getDefault().isRegistered(this)) {
+        if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this)
         }
     }
 
     protected fun getQiscusView(): JitsiMeetView? {
-        val fragment = this.supportFragmentManager.findFragmentById(R.id.jitsiFragment) as JitsiMeetFragment?
+        val fragment =
+            this.supportFragmentManager.findFragmentById(R.id.jitsiFragment) as JitsiMeetFragment?
         return fragment?.jitsiView
     }
 
     @Subscribe
-    fun onReceivedEvent(meetEvent : MeetEvent) {
-        if(meetEvent.event == QiscusMeet.QiscusMeetEvent.REJECTED && meetEvent.roomId == roomId) {
+    fun onReceivedEvent(meetEvent: MeetEvent) {
+        if (meetEvent.event == QiscusMeet.QiscusMeetEvent.REJECTED && meetEvent.roomId == roomId) {
             jitsiView?.leave()
         }
     }

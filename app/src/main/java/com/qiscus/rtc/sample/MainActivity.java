@@ -15,7 +15,7 @@ import com.qiscus.rtc.sample.presenter.LoginPresenter;
 import com.qiscus.rtc.sample.simple.SimpleCall;
 import com.qiscus.sdk.Qiscus;
 
-public class MainActivity extends AppCompatActivity implements LoginPresenter.View{
+public class MainActivity extends AppCompatActivity implements LoginPresenter.View {
     private static final String TAG = MainActivity.class.getSimpleName();
     private Button simple;
     private Button integration;
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements LoginPresenter.Vi
         Log.d(TAG, "onResumeChat: " + Qiscus.hasSetupUser());
         if (Qiscus.hasSetupUser()) {
             logout.setVisibility(View.VISIBLE);
-            logout.setText("Logout as "+Qiscus.getQiscusAccount().getUsername());
+            logout.setText("Logout as " + Qiscus.getQiscusAccount().getUsername());
         } else {
             logout.setVisibility(View.GONE);
         }

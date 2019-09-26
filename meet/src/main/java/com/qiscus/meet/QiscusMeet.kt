@@ -39,7 +39,7 @@ class QiscusMeet {
 
         @JvmStatic
         fun launch(): MeetInfo {
-            if(!this::application.isInitialized) {
+            if (!this::application.isInitialized) {
                 throw RuntimeException("Please init QiscusMeet first")
             }
             return MeetInfo()
@@ -55,7 +55,7 @@ class QiscusMeet {
         VOICE, VIDEO
     }
 
-    enum class QiscusMeetEvent{
+    enum class QiscusMeetEvent {
         REJECTED
     }
 

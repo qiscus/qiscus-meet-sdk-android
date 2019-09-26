@@ -24,7 +24,7 @@ public class SimpleCall extends AppCompatActivity {
         etRoomId = findViewById(R.id.et_room);
         etName = findViewById(R.id.et_name);
 
-        btnStart.setOnClickListener(v-> {
+        btnStart.setOnClickListener(v -> {
             startCall();
         });
     }
@@ -35,12 +35,12 @@ public class SimpleCall extends AppCompatActivity {
         //hardcoded avatar
         String avatar = "https://dw9to29mmj727.cloudfront.net/misc/newsletter-naruto3.png";
 
-        if(name.length() == 0) {
+        if (name.length() == 0) {
             Toast.makeText(this, "Name required", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if(roomId.length() == 0) {
+        if (roomId.length() == 0) {
             Toast.makeText(this, "room id required", Toast.LENGTH_SHORT).show();
             return;
         }
