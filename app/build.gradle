@@ -30,7 +30,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.qiscus.sdk:chat:2.30.11'
-    implementation 'com.qiscus.meet:meet-sdk-alpha:0.0.5'
+//    implementation 'com.qiscus.meet:meet-sdk-alpha:0.0.5'
     implementation 'com.android.support:multidex:1.0.3'
-//    implementation project(':meet')
+    implementation project(':meet')
 }

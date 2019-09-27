@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.os.Handler;
 import android.support.multidex.MultiDexApplication;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.qiscus.meet.MeetTerminatedConfEvent;
 import com.qiscus.meet.QiscusMeet;
 import com.qiscus.rtc.sample.simple.IncomingCallActivity;
 import com.qiscus.rtc.sample.utils.Config;
@@ -49,7 +51,7 @@ public class SampleApplication extends MultiDexApplication {
             EventBus.getDefault().register(this);
         }
 
-        QiscusMeet.init(this,"https://meet.qiscus.com");
+        QiscusMeet.init(this, "https://meet.qiscus.com");
     }
 
     public static SampleApplication getInstance() {
@@ -134,5 +136,10 @@ public class SampleApplication extends MultiDexApplication {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Subscribe
+    public void onTerminatedConf(MeetTerminatedConfEvent event) {
+        Log.e("debug event", event.getRoomId());
     }
 }

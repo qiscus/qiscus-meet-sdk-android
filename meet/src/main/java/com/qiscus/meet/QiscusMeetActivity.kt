@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.util.Log
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.jitsi.meet.sdk.*
@@ -31,8 +32,8 @@ class QiscusMeetActivity : JitsiMeetActivity() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         roomId = intent.getStringExtra(room)
     }
 
@@ -58,6 +59,12 @@ class QiscusMeetActivity : JitsiMeetActivity() {
 
     override fun join(options: JitsiMeetConferenceOptions?) {
         super.join(options)
+    }
+
+    override fun onConferenceTerminated(data: MutableMap<String, Any>?) {
+        super.onConferenceTerminated(data)
+
+        EventBus.getDefault().post(MeetTerminatedConfEvent(roomId, data))
     }
 
     override fun onDestroy() {
