@@ -20,8 +20,11 @@ class QiscusMeetActivity : JitsiMeetActivity() {
     val TAG = this.javaClass.simpleName
     lateinit var roomId: String
 
+
     companion object {
         val room = "roomid"
+        const val ACTION_JITSI_MEET_CONFERENCE = "org.jitsi.meet.CONFERENCE"
+        const val JITSI_MEET_CONFERENCE_OPTIONS = "JitsiMeetConferenceOptions"
 
         fun launch(context: Context, options: JitsiMeetConferenceOptions?, roomid: String) {
             val intent = Intent(context, QiscusMeetActivity::class.java)
