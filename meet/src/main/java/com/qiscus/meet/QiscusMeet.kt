@@ -19,8 +19,9 @@ class QiscusMeet {
         private lateinit var url: URL
         private lateinit var config: JitsiMeetConferenceOptions
 
+
         @JvmStatic
-        fun init(application: Application, url: String) {
+        fun setup(application: Application, url: String) {
             this.application = application
             try {
                 this.url = URL(url)
@@ -38,11 +39,19 @@ class QiscusMeet {
         }
 
         @JvmStatic
-        fun launch(): MeetInfo {
+        fun call(): MeetInfo {
             if (!this::application.isInitialized) {
                 throw RuntimeException("Please init QiscusMeet first")
             }
-            return MeetInfo()
+            return MeetInfo(url.toString())
+        }
+
+        @JvmStatic
+        fun answer(): MeetInfo {
+            if (!this::application.isInitialized) {
+                throw RuntimeException("Please init QiscusMeet first")
+            }
+            return MeetInfo(url.toString())
         }
 
         @JvmStatic
