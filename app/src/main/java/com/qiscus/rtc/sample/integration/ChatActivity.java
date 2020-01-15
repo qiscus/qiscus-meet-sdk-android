@@ -132,7 +132,7 @@ public class ChatActivity extends QiscusBaseChatActivity {
                 try {
                     JSONObject objStream = new JSONObject(response);
                     if (objStream.getInt("status") == 200) {
-                        QiscusMeet.launch()
+                        QiscusMeet.call()
                                 .setRoomId(roomId)
                                 .setDisplayName(Qiscus.getQiscusAccount().getUsername())
                                 .build(ChatActivity.this);

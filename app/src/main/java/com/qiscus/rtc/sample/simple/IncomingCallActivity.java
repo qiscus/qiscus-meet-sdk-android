@@ -50,7 +50,7 @@ public class IncomingCallActivity extends AppCompatActivity {
     }
 
     private void onAccept() {
-        QiscusMeet.launch()
+        QiscusMeet.call()
                 .setRoomId(roomId)
                 .setDisplayName(Qiscus.getQiscusAccount().getUsername())
                 .build(this);

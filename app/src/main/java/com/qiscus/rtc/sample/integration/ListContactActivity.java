@@ -55,7 +55,7 @@ public class ListContactActivity extends AppCompatActivity implements ContactPre
         if(uri != null && Qiscus.hasSetupUser()) {
             String[] param = uri.toString().split("/");
             String roomId = param[param.length - 1];
-            QiscusMeet.launch()
+            QiscusMeet.call()
                     .setRoomId(roomId)
                     .setDisplayName(Qiscus.getQiscusAccount().getUsername())
                     .build(this);
