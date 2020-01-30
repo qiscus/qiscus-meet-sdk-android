@@ -17,13 +17,14 @@ import java.net.URL
  * Author     : Taufik Budi S
  * GitHub     : https://github.com/tfkbudi
  */
-class MeetInfo(url: String) {
+class MeetInfo(url: String, typeCaller: QiscusMeet.TypeCaller) {
 
     private var roomId: String = ""
     private var type: QiscusMeet.Type = QiscusMeet.Type.VIDEO
     private var displayName: String = "Guest"
     private var avatar: String? = null
     private var url: String = url
+    private var typeCaller: QiscusMeet.TypeCaller = typeCaller
 
     fun setRoomId(roomId: String) = apply { this.roomId = roomId }
 
@@ -36,38 +37,50 @@ class MeetInfo(url: String) {
     fun build(context: Context) {
         val token = generateToken(displayName, avatar)
 
-
-        val client = OkHttpClient()
-        val request: Request = Request.Builder()
-            .url(url+"/get-room-size?room=" + roomId)
-            .build()
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.d("QiscusMeet", "Failed get participants")
-            }
-
-            @Throws(IOException::class)
-            override fun onResponse(call: Call, response: Response) {
-                assert(response.body() != null)
-                val jsonData = response.body()!!.string()
-                try {
-                    val jsonObject = JSONObject(jsonData)
-                    if (jsonObject["participants"] == "0") {
-                        Log.d("QiscusMeet", "You haven't participants")
-                    } else {
-                        val options = JitsiMeetConferenceOptions.Builder()
-                            .setRoom(roomId)
-                            .setAudioOnly(type == QiscusMeet.Type.VOICE)
-                            .setToken(token)
-                            .build()
-
-                        QiscusMeetActivity.launch(context, options, roomId)
-                    }
-                } catch (e: JSONException) {
-                    e.printStackTrace()
+        if (typeCaller.equals(QiscusMeet.TypeCaller.CALLER)) {
+            val options = JitsiMeetConferenceOptions.Builder()
+                .setRoom(roomId)
+                .setAudioOnly(type == QiscusMeet.Type.VOICE)
+                .setToken(token)
+                .build()
+            QiscusMeetActivity.launch(context, options, roomId)
+        } else {
+            val client = OkHttpClient()
+            val request: Request = Request.Builder()
+                .url(url+"/get-room-size?room=" + roomId)
+                .build()
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    Log.d("QiscusMeet", "Failed get participants")
                 }
-            }
-        })
+
+                @Throws(IOException::class)
+                override fun onResponse(call: Call, response: Response) {
+                    assert(response.body() != null)
+                    val jsonData = response.body()!!.string()
+                    try {
+                        val jsonObject = JSONObject(jsonData)
+                        val totalParticipants: Int = jsonObject["participants"] as Int
+
+                        if (totalParticipants > 0) {
+                            val options = JitsiMeetConferenceOptions.Builder()
+                                .setRoom(roomId)
+                                .setAudioOnly(type == QiscusMeet.Type.VOICE)
+                                .setToken(token)
+                                .build()
+
+                            QiscusMeetActivity.launch(context, options, roomId)
+                        } else {
+                            Log.d("QiscusMeet", "You haven't participants")
+                        }
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
+                    }
+                }
+            })
+        }
+
+
     }
 
     private fun generateToken(name: String, avatar: String?): String {
