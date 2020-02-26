@@ -45,7 +45,7 @@ public class SimpleCall extends AppCompatActivity {
             return;
         }
 
-        QiscusMeet.answer()
+        QiscusMeet.call()
                 .setTypeCall(QiscusMeet.Type.VOICE)
                 .setRoomId(roomId)
                 .setDisplayName(name)
