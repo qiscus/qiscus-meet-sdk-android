@@ -41,6 +41,8 @@ class MeetInfo(url: String, typeCaller: QiscusMeet.TypeCaller) {
             val options = JitsiMeetConferenceOptions.Builder()
                 .setRoom(roomId)
                 .setAudioOnly(type == QiscusMeet.Type.VOICE)
+                .setFeatureFlag("pip.enabled",true)
+                .setFeatureFlag("directCall",true)
                 .setToken(token)
                 .build()
             QiscusMeetActivity.launch(context, options, roomId)

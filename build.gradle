@@ -22,6 +22,7 @@ allprojects {
         jcenter()
         maven { url "https://artifactory.qiscus.com/artifactory/qiscus-meet" }
         maven { url "https://dl.bintray.com/qiscustech/maven" }
+        maven { url "file:/Users/rajapulau/Documents/Qiscus/jitsi-meet-android-sdk-dg-release" }
     }
 }
 

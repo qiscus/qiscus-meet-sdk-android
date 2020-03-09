@@ -1,19 +1,16 @@
 package com.qiscus.rtc.sample.integration;
 
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
+
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.qiscus.rtc.sample.MainActivity;
@@ -24,10 +21,7 @@ import com.qiscus.rtc.sample.adapter.OnItemClickListener;
 import com.qiscus.rtc.sample.presenter.HomePresenter;
 import com.qiscus.sdk.chat.core.data.model.QiscusChatRoom;
 
-import java.io.IOException;
 import java.util.List;
-
-import retrofit2.HttpException;
 
 public class ContactActivity extends AppCompatActivity implements HomePresenter.View, OnItemClickListener {
     private static final String TAG = ContactActivity.class.getSimpleName();

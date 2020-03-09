@@ -2,7 +2,7 @@ package com.qiscus.rtc.sample.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * Created by rajapulau on 3/13/18.
