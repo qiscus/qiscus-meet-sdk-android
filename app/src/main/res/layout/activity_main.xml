@@ -10,9 +10,16 @@
 
     <Button
         android:id="@+id/btn_simple"
-        android:text="Simple Call Application"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="Call One on One" />
+
+    <Button
+        android:id="@+id/btn_conference"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Call Voice Conference" />
+
     <Button
         android:id="@+id/btn_chat_integration"
         android:text="Chat SDK Integration"

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.qiscus.meet.QiscusMeet;
 import com.qiscus.rtc.sample.integration.ContactActivity;
 import com.qiscus.rtc.sample.presenter.LoginPresenter;
 import com.qiscus.rtc.sample.simple.SimpleCall;
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity implements LoginPresenter.Vi
     private Button simple;
     private Button integration;
     private Button logout;
+    private Button conference;
 
     private AlertDialog alertDialog;
 
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements LoginPresenter.Vi
         simple = findViewById(R.id.btn_simple);
         integration = findViewById(R.id.btn_chat_integration);
         logout = findViewById(R.id.btn_logout);
+        conference = findViewById(R.id.btn_conference);
 
         final LoginPresenter loginPresenter = new LoginPresenter(this,
                 SampleApplication.getInstance().getComponent().getUserRepository());
@@ -82,6 +85,15 @@ public class MainActivity extends AppCompatActivity implements LoginPresenter.Vi
                         "123"
                 ));
             }
+        });
+
+        conference.setOnClickListener(v -> {
+            QiscusMeet.call()
+                    .setTypeCall(QiscusMeet.Type.CONFERENCE)
+                    .setRoomId("mobile-legend")
+                    .setDisplayName("yoga-setiawan")
+                    .setAvatar("https://dw9to29mmj727.cloudfront.net/misc/newsletter-naruto3.png")
+                    .build(this);
         });
     }
 
