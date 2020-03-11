@@ -7,5 +7,6 @@ package com.qiscus.meet
  */
 data class MeetTerminatedConfEvent(
     val roomId: String,
-    val data: MutableMap<String, Any>?
+    val data: MutableMap<String, Any>?,
+    val type: QiscusMeet.Type?
 )
