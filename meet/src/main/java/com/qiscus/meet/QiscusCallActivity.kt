@@ -7,24 +7,33 @@ import android.os.Parcelable
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import com.facebook.react.modules.core.PermissionListener
+import org.greenrobot.eventbus.EventBus
 import org.jitsi.meet.sdk.JitsiMeetActivityInterface
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
 import org.jitsi.meet.sdk.JitsiMeetViewListener
 
 
 class QiscusCallActivity : AppCompatActivity(), JitsiMeetActivityInterface {
-    lateinit var roomId: String
+    var roomId: String? = null
+    var type: QiscusMeet.Type? = null
 
     companion object {
-        val room = "roomid"
-        const val ACTION_JITSI_MEET_CONFERENCE = "org.jitsi.meet.CONFERENCE"
-        const val JITSI_MEET_CONFERENCE_OPTIONS = "JitsiMeetConferenceOptions"
+        private const val QISCUS_MEET_CONFERENCE_ROOM_ID = "roomId"
+        private const val QISCUS_MEET_CONFERENCE_ACTION = "QiscusMeet.CONFERENCE"
+        private const val QISCUS_MEET_CONFERENCE_OPTIONS = "QiscusMeetConferenceOptions"
+        private const val QISCUS_MEET_CONFERENCE_TYPE = "QiscusConferenceType"
 
-        fun launch(context: Context, options: JitsiMeetConferenceOptions?, roomid: String) {
+        fun launch(
+            context: Context,
+            options: JitsiMeetConferenceOptions?,
+            roomId: String,
+            type: QiscusMeet.Type
+        ) {
             val intent = Intent(context, QiscusCallActivity::class.java)
-            intent.action = ACTION_JITSI_MEET_CONFERENCE
-            intent.putExtra(JITSI_MEET_CONFERENCE_OPTIONS, options)
-            intent.putExtra(room, roomid)
+            intent.action = QISCUS_MEET_CONFERENCE_ACTION
+            intent.putExtra(QISCUS_MEET_CONFERENCE_OPTIONS, options)
+            intent.putExtra(QISCUS_MEET_CONFERENCE_TYPE, type)
+            intent.putExtra(QISCUS_MEET_CONFERENCE_ROOM_ID, roomId)
             context.startActivity(intent)
         }
     }
@@ -33,14 +42,22 @@ class QiscusCallActivity : AppCompatActivity(), JitsiMeetActivityInterface {
         super.onCreate(savedInstanceState)
         if (MeetHolder.getJitsiView() == null) {
             val options =
-                intent.getParcelableExtra<Parcelable>("JitsiMeetConferenceOptions") as? JitsiMeetConferenceOptions
-            roomId = intent.getStringExtra(room)
+                intent.getParcelableExtra<Parcelable>(QISCUS_MEET_CONFERENCE_OPTIONS) as? JitsiMeetConferenceOptions
+            roomId = intent.getStringExtra(QISCUS_MEET_CONFERENCE_ROOM_ID)
+            type =
+                intent.getSerializableExtra(QISCUS_MEET_CONFERENCE_TYPE) as? QiscusMeet.Type
             MeetHolder().initialise(this)
+            roomId?.let {
+                MeetSharePref.setRoomId(it)
+            }
+            type?.let {
+                MeetSharePref.setType(it.toString())
+            }
             if (options == null) {
                 finish()
             }
             options?.let {
-                MeetHolder().requestCallStart(roomId, it)
+                MeetHolder().requestCallStart(it)
             }
         }
 
@@ -74,10 +91,24 @@ class QiscusCallActivity : AppCompatActivity(), JitsiMeetActivityInterface {
 
     private fun stopCall() {
         runOnUiThread {
-            MeetHolder().stopCall()
+            MeetHolder.getJitsiView()?.leave()
+            MeetHolder.removeJitsiView()
+            val intent = Intent(this, CreateNotfication::class.java)
+            this.stopService(intent)
         }
-    }
+        val typeCall: QiscusMeet.Type = MeetSharePref.getType().let {
+            when (it) {
+                QiscusMeet.Type.CONFERENCE.toString() -> QiscusMeet.Type.CONFERENCE
+                QiscusMeet.Type.VOICE.toString() -> QiscusMeet.Type.VOICE
+                QiscusMeet.Type.VIDEO.toString() -> QiscusMeet.Type.VIDEO
+                else -> QiscusMeet.Type.CONFERENCE
+            }
+        }
+        EventBus.getDefault()
+            .post(MeetTerminatedConfEvent(MeetSharePref.getRoomId(), null, typeCall))
 
+        finish()
+    }
 
     override fun requestPermissions(p0: Array<out String>?, p1: Int, p2: PermissionListener?) {
         // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

@@ -44,7 +44,7 @@ class MeetInfo(url: String, typeCaller: QiscusMeet.TypeCaller) {
                 .setFeatureFlag("directCall", type == QiscusMeet.Type.VOICE)
                 .setToken(token)
                 .build()
-            QiscusCallActivity.launch(context, options, roomId)
+            QiscusCallActivity.launch(context, options, roomId, type)
             // QiscusMeetActivity.launch(context, options, roomId)
         } else {
             val client = OkHttpClient()

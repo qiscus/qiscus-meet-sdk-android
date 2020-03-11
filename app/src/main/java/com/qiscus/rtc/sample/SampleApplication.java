@@ -2,14 +2,15 @@ package com.qiscus.rtc.sample;
 
 import android.content.Intent;
 import android.os.Handler;
-import androidx.multidex.MultiDexApplication;
-import androidx.core.app.NotificationCompat;
-import android.util.Log;
 import android.widget.Toast;
+
+import androidx.core.app.NotificationCompat;
+import androidx.multidex.MultiDexApplication;
 
 import com.qiscus.meet.MeetTerminatedConfEvent;
 import com.qiscus.meet.QiscusMeet;
 import com.qiscus.rtc.sample.simple.IncomingCallActivity;
+import com.qiscus.rtc.sample.simple.SimpleCall;
 import com.qiscus.rtc.sample.utils.Config;
 import com.qiscus.sdk.Qiscus;
 import com.qiscus.sdk.chat.core.data.model.QiscusComment;
@@ -140,6 +141,6 @@ public class SampleApplication extends MultiDexApplication {
 
     @Subscribe
     public void onTerminatedConf(MeetTerminatedConfEvent event) {
-        Log.e("debug event", event.getRoomId());
+        startActivity(new Intent(getApplicationContext(), SimpleCall.class));
     }
 }
