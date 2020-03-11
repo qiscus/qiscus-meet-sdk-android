@@ -40,7 +40,7 @@ androidExtensions {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation ('org.jitsi.react:jitsi-meet-sdk:+') { transitive = true }
+    implementation('org.jitsi.react:jitsi-meet-sdk:+') { transitive = true }
 //    implementation('com.qiscus.meet:meet-alpha:0.0.4') { transitive = true }
     implementation 'org.greenrobot:eventbus:3.1.1'
     implementation 'androidx.appcompat:appcompat:1.0.0'
@@ -51,7 +51,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     api 'io.jsonwebtoken:jjwt-api:0.10.7'
     implementation 'io.jsonwebtoken:jjwt-impl:0.10.7'
-    implementation ('io.jsonwebtoken:jjwt-orgjson:0.10.7') {
+    implementation('io.jsonwebtoken:jjwt-orgjson:0.10.7') {
         exclude group: 'org.json', module: 'json'
     }
 }
