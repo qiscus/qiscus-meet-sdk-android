@@ -15,7 +15,7 @@ import java.net.URL
 class QiscusMeet {
 
     companion object {
-        private lateinit var application: Application
+        lateinit var application: Application
         private lateinit var url: URL
         private lateinit var config: JitsiMeetConferenceOptions
 
