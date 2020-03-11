@@ -10,7 +10,6 @@ import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
-import java.net.URL
 
 /**
  * Created on : 14/06/19
@@ -40,16 +39,17 @@ class MeetInfo(url: String, typeCaller: QiscusMeet.TypeCaller) {
         if (typeCaller.equals(QiscusMeet.TypeCaller.CALLER)) {
             val options = JitsiMeetConferenceOptions.Builder()
                 .setRoom(roomId)
-                .setAudioOnly(type == QiscusMeet.Type.VOICE)
-                .setFeatureFlag("pip.enabled",true)
-                .setFeatureFlag("directCall",true)
+                .setAudioOnly(type == QiscusMeet.Type.VOICE || type == QiscusMeet.Type.CONFERENCE)
+                .setFeatureFlag("pip.enabled", true)
+                .setFeatureFlag("directCall", type == QiscusMeet.Type.VOICE)
                 .setToken(token)
                 .build()
-            QiscusMeetActivity.launch(context, options, roomId)
+            QiscusCallActivity.launch(context, options, roomId)
+            // QiscusMeetActivity.launch(context, options, roomId)
         } else {
             val client = OkHttpClient()
             val request: Request = Request.Builder()
-                .url(url+"/get-room-size?room=" + roomId)
+                .url(url + "/get-room-size?room=" + roomId)
                 .build()
             client.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {

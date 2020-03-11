@@ -1,10 +1,11 @@
 package com.qiscus.rtc.sample.simple;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.qiscus.meet.QiscusMeet;
 import com.qiscus.rtc.sample.R;
@@ -23,7 +24,6 @@ public class SimpleCall extends AppCompatActivity {
         btnStart = findViewById(R.id.btn_start);
         etRoomId = findViewById(R.id.et_room);
         etName = findViewById(R.id.et_name);
-
         btnStart.setOnClickListener(v -> {
             startCall();
         });

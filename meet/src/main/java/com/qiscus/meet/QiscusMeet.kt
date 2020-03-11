@@ -61,7 +61,7 @@ class QiscusMeet {
     }
 
     enum class Type {
-        VOICE, VIDEO
+        VOICE, VIDEO, CONFERENCE
     }
 
     enum class TypeCaller {
