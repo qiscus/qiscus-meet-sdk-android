@@ -24,8 +24,6 @@ public class SimpleCall extends AppCompatActivity {
         btnStart = findViewById(R.id.btn_start);
         etRoomId = findViewById(R.id.et_room);
         etName = findViewById(R.id.et_name);
-        etRoomId.setText("yoga123");
-        etName.setText("yoga123");
         btnStart.setOnClickListener(v -> {
             startCall();
         });
