@@ -55,6 +55,11 @@ class QiscusMeet {
         }
 
         @JvmStatic
+        fun sendEvent() {
+
+        }
+
+        @JvmStatic
         fun event(event: QiscusMeetEvent, roomId: String) {
             EventBus.getDefault().post(MeetEvent(roomId, event))
         }

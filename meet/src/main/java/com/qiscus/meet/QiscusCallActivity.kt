@@ -1,9 +1,11 @@
 package com.qiscus.meet
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import com.facebook.react.modules.core.PermissionListener
@@ -66,6 +68,17 @@ class QiscusCallActivity : AppCompatActivity(), JitsiMeetActivityInterface {
             parent?.removeView(it)
             setContentView(it)
             it.listener = object : JitsiMeetViewListener {
+                override fun onBackPressedConference(p0: MutableMap<String, Any>?) {
+                    runOnUiThread {
+                        finish()
+                    }
+                }
+
+                @SuppressLint("LogNotTimber")
+                override fun onCustomEvent(p0: MutableMap<String, Any>?) {
+                    Log.d("onCustomEvent", p0.toString())
+                }
+
                 override fun onConferenceTerminated(p0: MutableMap<String, Any>?) {
                     stopCall()
                 }
