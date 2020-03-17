@@ -1,13 +1,11 @@
 package com.qiscus.meet
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.app.Service
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.IBinder
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 
 
@@ -39,7 +37,13 @@ class CreateNotfication : Service() {
     }
 
     private fun createNotification() {
-        createNotificationChannel()
+//        createNotificationChannel()
+        val channelId =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                createNotificationChannel("qiscus.meet.notification.channel", "Ongoing Call")
+            } else {
+                ""
+            }
 
         val notificationIntent = Intent(this, QiscusCallActivity::class.java)
         notificationIntent.flags = Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT
@@ -49,8 +53,8 @@ class CreateNotfication : Service() {
             notificationIntent,
             0
         )
-        val notification = NotificationCompat.Builder(this, "calling")
-            .setContentTitle("calling")
+        val notification = NotificationCompat.Builder(this, channelId)
+            .setContentTitle("Qiscus Meet Calling")
             .setContentText("calling")
             .setSound(null)
             .setDefaults(0)
@@ -60,18 +64,16 @@ class CreateNotfication : Service() {
         startForeground(1, notification)
     }
 
-    private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channelId = "0";
-            val name = getString(R.string.channel_name)
-            val descriptionText = getString(R.string.channel_description)
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val mChannel = NotificationChannel(channelId, name, importance)
-            mChannel.description = descriptionText
-            val notificationManager =
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(mChannel)
-        }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun createNotificationChannel(channelId: String, channelName: String): String{
+        val chan = NotificationChannel(channelId,
+            channelName, NotificationManager.IMPORTANCE_NONE)
+        chan.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
+        val service = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        service.createNotificationChannel(chan)
+        return channelId
     }
+
+
 
 }
