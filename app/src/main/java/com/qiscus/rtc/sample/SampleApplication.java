@@ -2,12 +2,15 @@ package com.qiscus.rtc.sample;
 
 import android.content.Intent;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 import androidx.multidex.MultiDexApplication;
 
-import com.qiscus.meet.MeetTerminatedConfEvent;
+import com.qiscus.meet.MeetEventBackPressedConference;
+import com.qiscus.meet.MeetEventCustom;
+import com.qiscus.meet.MeetTerminatedConferenceEvent;
 import com.qiscus.meet.QiscusMeet;
 import com.qiscus.rtc.sample.simple.IncomingCallActivity;
 import com.qiscus.rtc.sample.simple.SimpleCall;
@@ -141,7 +144,17 @@ public class SampleApplication extends MultiDexApplication {
     }
 
     @Subscribe
-    public void onTerminatedConf(MeetTerminatedConfEvent event) {
+    public void onMeetTerminatedConferenceEvent(MeetTerminatedConferenceEvent event) {
         startActivity(new Intent(getApplicationContext(), SimpleCall.class));
+    }
+
+    @Subscribe
+    public void onMeetBackPressedConference(MeetEventBackPressedConference event) {
+        startActivity(new Intent(getApplicationContext(), SimpleCall.class));
+    }
+
+    @Subscribe
+    public void onMeetCustomEvent(MeetEventCustom event) {
+        Log.d("onMeetCustomEvent", event.toString());
     }
 }

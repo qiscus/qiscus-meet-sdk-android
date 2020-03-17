@@ -53,13 +53,6 @@ class QiscusMeet {
             return MeetInfo(url.toString(), QiscusMeet.TypeCaller.CALLEE)
         }
 
-        /*send event from native to rn
-           sample:
-           val writableMap = Arguments.createMap()
-            writableMap.putBoolean("hasVideo", true)
-            event(writableMap,"sample")
-         */
-
         @JvmStatic
         fun sendEvent(event: Map<String, Any>) {
             MeetHolder.getJitsiView()?.sendEventMeet(Utils().convertHashMapToMap(event))

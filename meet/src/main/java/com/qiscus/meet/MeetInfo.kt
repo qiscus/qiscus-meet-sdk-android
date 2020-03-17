@@ -45,6 +45,7 @@ class MeetInfo(url: String, typeCaller: QiscusMeet.TypeCaller) {
                 .setToken(token)
                 .build()
             QiscusCallActivity.launch(context, options, roomId, type)
+            // QiscusMeetActivity.launch(context, options, roomId)
         } else {
             val client = OkHttpClient()
             val request: Request = Request.Builder()

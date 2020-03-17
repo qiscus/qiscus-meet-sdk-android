@@ -69,7 +69,7 @@ class QiscusMeetActivity : JitsiMeetActivity() {
 
     override fun onConferenceTerminated(data: MutableMap<String, Any>?) {
         super.onConferenceTerminated(data)
-        EventBus.getDefault().post(MeetTerminatedConfEvent(roomId, data, null))
+        EventBus.getDefault().post(MeetTerminatedConferenceEvent(roomId, data, null))
         val intent = Intent(this, CreateNotfication::class.java)
         this.stopService(intent)
     }

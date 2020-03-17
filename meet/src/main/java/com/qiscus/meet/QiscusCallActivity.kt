@@ -1,15 +1,17 @@
 package com.qiscus.meet
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
-import android.util.Log
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import com.facebook.react.modules.core.PermissionListener
 import org.greenrobot.eventbus.EventBus
+import org.jitsi.meet.sdk.JitsiMeetActivityDelegate
 import org.jitsi.meet.sdk.JitsiMeetActivityInterface
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
 import org.jitsi.meet.sdk.JitsiMeetViewListener
@@ -42,7 +44,9 @@ class QiscusCallActivity : AppCompatActivity(), JitsiMeetActivityInterface {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECORD_AUDIO), 1);
         if (MeetHolder.getJitsiView() == null) {
+
             val options =
                 intent.getParcelableExtra<Parcelable>(QISCUS_MEET_CONFERENCE_OPTIONS) as? JitsiMeetConferenceOptions
             roomId = intent.getStringExtra(QISCUS_MEET_CONFERENCE_ROOM_ID)
@@ -69,14 +73,12 @@ class QiscusCallActivity : AppCompatActivity(), JitsiMeetActivityInterface {
             setContentView(it)
             it.listener = object : JitsiMeetViewListener {
                 override fun onBackPressedConference(p0: MutableMap<String, Any>?) {
-                    runOnUiThread {
-                        finish()
-                    }
+                    EventBus.getDefault().post(MeetEventBackPressedConference(p0))
                 }
 
                 @SuppressLint("LogNotTimber")
                 override fun onCustomEvent(p0: MutableMap<String, Any>?) {
-                    Log.d("onCustomEvent", p0.toString())
+                    EventBus.getDefault().post(MeetEventCustom(p0))
                 }
 
                 override fun onConferenceTerminated(p0: MutableMap<String, Any>?) {
@@ -118,12 +120,30 @@ class QiscusCallActivity : AppCompatActivity(), JitsiMeetActivityInterface {
             }
         }
         EventBus.getDefault()
-            .post(MeetTerminatedConfEvent(MeetSharePref.getRoomId(), null, typeCall))
+            .post(MeetTerminatedConferenceEvent(MeetSharePref.getRoomId(), null, typeCall))
 
         finish()
     }
 
     override fun requestPermissions(p0: Array<out String>?, p1: Int, p2: PermissionListener?) {
-        // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        JitsiMeetActivityDelegate.requestPermissions(this, p0, p1, p2)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        JitsiMeetActivityDelegate.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        JitsiMeetActivityDelegate.onNewIntent(intent)
+        super.onNewIntent(intent)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        JitsiMeetActivityDelegate.onActivityResult(this, requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data)
     }
 }
