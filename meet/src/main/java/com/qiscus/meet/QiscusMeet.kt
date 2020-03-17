@@ -1,7 +1,6 @@
 package com.qiscus.meet
 
 import android.app.Application
-import com.facebook.react.bridge.WritableMap
 import org.jitsi.meet.sdk.JitsiMeet
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
 import java.net.MalformedURLException
@@ -62,8 +61,8 @@ class QiscusMeet {
          */
 
         @JvmStatic
-        fun sendEvent(event: WritableMap) {
-            MeetHolder.getJitsiView()?.sendEventMeet(event)
+        fun sendEvent(event: Map<String, Any>) {
+            MeetHolder.getJitsiView()?.sendEventMeet(Utils().convertHashMapToMap(event))
         }
     }
 
