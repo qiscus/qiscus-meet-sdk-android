@@ -10,9 +10,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.qiscus.meet.QiscusMeet;
 import com.qiscus.rtc.sample.R;
 
+import java.util.HashMap;
+
 public class SimpleCall extends AppCompatActivity {
 
     private Button btnStart;
+    private Button sendEvent;
     private EditText etRoomId;
     private EditText etName;
 
@@ -22,10 +25,16 @@ public class SimpleCall extends AppCompatActivity {
         setContentView(R.layout.activity_simple_call2);
 
         btnStart = findViewById(R.id.btn_start);
+        sendEvent = findViewById(R.id.send_event);
         etRoomId = findViewById(R.id.et_room);
         etName = findViewById(R.id.et_name);
         btnStart.setOnClickListener(v -> {
             startCall();
+        });
+        sendEvent.setOnClickListener(v -> {
+            HashMap<String, String> event = new HashMap<String, String>();
+            event.put("test", "event");
+            QiscusMeet.sendEvent(event);
         });
     }
 

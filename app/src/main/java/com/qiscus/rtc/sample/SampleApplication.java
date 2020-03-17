@@ -91,8 +91,9 @@ public class SampleApplication extends MultiDexApplication {
     }
 
     private void handleCustomEvent(String roomId, String event) {
+
         if (event.equalsIgnoreCase("rejected")) {
-            QiscusMeet.event(QiscusMeet.QiscusMeetEvent.REJECTED, roomId);
+            //QiscusMeet.event(QiscusMeet.QiscusMeetEvent.REJECTED, roomId);
         }
     }
 
