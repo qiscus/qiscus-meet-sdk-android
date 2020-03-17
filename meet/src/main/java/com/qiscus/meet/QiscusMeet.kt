@@ -1,7 +1,7 @@
 package com.qiscus.meet
 
 import android.app.Application
-import org.greenrobot.eventbus.EventBus
+import com.facebook.react.bridge.WritableMap
 import org.jitsi.meet.sdk.JitsiMeet
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
 import java.net.MalformedURLException
@@ -54,14 +54,16 @@ class QiscusMeet {
             return MeetInfo(url.toString(), QiscusMeet.TypeCaller.CALLEE)
         }
 
-        @JvmStatic
-        fun sendEvent() {
+        /*send event from native to rn
+           sample:
+           val writableMap = Arguments.createMap()
+            writableMap.putBoolean("hasVideo", true)
+            event(writableMap,"sample")
+         */
 
-        }
-
         @JvmStatic
-        fun event(event: QiscusMeetEvent, roomId: String) {
-            EventBus.getDefault().post(MeetEvent(roomId, event))
+        fun sendEvent(event: WritableMap) {
+            MeetHolder.getJitsiView()?.sendEventMeet(event)
         }
     }
 
