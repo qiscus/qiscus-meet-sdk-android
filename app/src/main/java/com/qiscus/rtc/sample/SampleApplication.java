@@ -2,8 +2,8 @@ package com.qiscus.rtc.sample;
 
 import android.content.Intent;
 import android.os.Handler;
-import android.support.multidex.MultiDexApplication;
-import android.support.v4.app.NotificationCompat;
+import androidx.multidex.MultiDexApplication;
+import androidx.core.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
