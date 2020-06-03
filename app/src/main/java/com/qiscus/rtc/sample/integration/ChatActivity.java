@@ -97,7 +97,7 @@ public class ChatActivity extends QiscusBaseChatActivity {
         JSONObject payload = new JSONObject();
         JSONObject caller = new JSONObject();
         JSONObject callee = new JSONObject();
-        final String roomId = Config.CALL_APP_ID + "_" + String.valueOf(System.currentTimeMillis());
+        final String roomId = String.valueOf(qiscusChatRoom.getId());
         try {
             request.put("system_event_type", "custom");
             request.put("room_id",String.valueOf(qiscusChatRoom.getId()));

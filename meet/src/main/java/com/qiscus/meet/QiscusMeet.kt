@@ -43,7 +43,7 @@ class QiscusMeet {
             if (!this::application.isInitialized) {
                 throw RuntimeException("Please init QiscusMeet first")
             }
-            return MeetInfo(url.toString(), QiscusMeet.TypeCaller.CALLER)
+            return MeetInfo(url.toString(), TypeCaller.CALLER)
         }
 
         @JvmStatic
@@ -51,7 +51,7 @@ class QiscusMeet {
             if (!this::application.isInitialized) {
                 throw RuntimeException("Please init QiscusMeet first")
             }
-            return MeetInfo(url.toString(), QiscusMeet.TypeCaller.CALLEE)
+            return MeetInfo(url.toString(), TypeCaller.CALLEE)
         }
 
         @JvmStatic

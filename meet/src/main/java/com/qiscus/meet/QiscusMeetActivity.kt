@@ -28,6 +28,7 @@ class QiscusMeetActivity : JitsiMeetActivity() {
 
         fun launch(context: Context, options: JitsiMeetConferenceOptions?, roomid: String) {
             val intent = Intent(context, QiscusMeetActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             intent.action = ACTION_JITSI_MEET_CONFERENCE
             intent.putExtra(JITSI_MEET_CONFERENCE_OPTIONS, options)
             intent.putExtra(room, roomid)
@@ -63,6 +64,8 @@ class QiscusMeetActivity : JitsiMeetActivity() {
     override fun join(options: JitsiMeetConferenceOptions?) {
         super.join(options)
     }
+
+
 
     override fun onConferenceTerminated(data: MutableMap<String, Any>?) {
         super.onConferenceTerminated(data)

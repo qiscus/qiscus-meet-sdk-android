@@ -9,10 +9,14 @@ import android.widget.Toast;
 
 import com.qiscus.meet.MeetTerminatedConfEvent;
 import com.qiscus.meet.QiscusMeet;
+import com.qiscus.rtc.sample.integration.ChatActivity;
 import com.qiscus.rtc.sample.simple.IncomingCallActivity;
+import com.qiscus.rtc.sample.utils.AsyncHttpUrlConnection;
 import com.qiscus.rtc.sample.utils.Config;
 import com.qiscus.sdk.Qiscus;
 import com.qiscus.sdk.chat.core.data.model.QiscusComment;
+import com.qiscus.sdk.chat.core.data.model.QiscusRoomMember;
+import com.qiscus.sdk.chat.core.data.remote.QiscusPusherApi;
 import com.qiscus.sdk.chat.core.event.QiscusChatRoomEvent;
 import com.qiscus.sdk.chat.core.event.QiscusCommentReceivedEvent;
 import com.qiscus.sdk.data.model.QiscusNotificationBuilderInterceptor;
@@ -30,6 +34,7 @@ public class SampleApplication extends MultiDexApplication {
 
     private static SampleApplication instance;
     private AppComponent component;
+    private AsyncHttpUrlConnection httpConnection;
 
     @Override
     public void onCreate() {
@@ -51,7 +56,7 @@ public class SampleApplication extends MultiDexApplication {
             EventBus.getDefault().register(this);
         }
 
-        QiscusMeet.setup(this, "https://meet.qiscus.com");
+        QiscusMeet.setup(this, "https://dgcall.qiscus.com");
     }
 
     public static SampleApplication getInstance() {
@@ -141,5 +146,56 @@ public class SampleApplication extends MultiDexApplication {
     @Subscribe
     public void onTerminatedConf(MeetTerminatedConfEvent event) {
         Log.e("debug event", event.getRoomId());
+        endCall(event.getRoomId());
+        JSONObject json = new JSONObject();
+        try {
+            json.put("sender", event.getRoomId());
+            json.put("event", "rejected");
+            json.put("active", false);
+
+            QiscusPusherApi.getInstance().setEvent(Long.parseLong(event.getRoomId()), json);
+
+        } catch (Exception ex) {
+            Log.e("IncomingCallActivity", ex.getMessage());
+        }
+    }
+
+    private void endCall(String roomId) {
+        JSONObject request = new JSONObject();
+        JSONObject payload = new JSONObject();
+        JSONObject caller = new JSONObject();
+        JSONObject callee = new JSONObject();
+
+        try {
+            request.put("system_event_type", "custom");
+            request.put("room_id", roomId);
+            request.put("message", Qiscus.getQiscusAccount().getUsername() + " endcall ");
+            payload.put("type", "endcall");
+            payload.put("call_event", "endcall");
+            payload.put("call_room_id", roomId);
+            payload.put("call_is_video", true);
+            caller.put("username", Qiscus.getQiscusAccount().getEmail());
+            caller.put("name", Qiscus.getQiscusAccount().getUsername());
+            caller.put("avatar", Qiscus.getQiscusAccount().getAvatar());
+            payload.put("call_caller", caller);
+            payload.put("call_callee", callee);
+            request.put("payload", payload);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        httpConnection = new AsyncHttpUrlConnection("POST", "/api/v2/rest/post_system_event_message", request.toString(), new AsyncHttpUrlConnection.AsyncHttpEvents() {
+            @Override
+            public void onHttpError(String errorMessage) {
+                Log.e("TAG", "API connection error: " + errorMessage);
+            }
+
+            @Override
+            public void onHttpComplete(String response) {
+                Log.d("TAG", "API connection success: " + response);
+            }
+        });
+        httpConnection.setContentType("application/json");
+        httpConnection.send();
     }
 }
