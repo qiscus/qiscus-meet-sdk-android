@@ -56,7 +56,7 @@ public class SampleApplication extends MultiDexApplication {
             EventBus.getDefault().register(this);
         }
 
-        QiscusMeet.setup(this, "https://dgcall.qiscus.com");
+        QiscusMeet.setup(this, "https://meet.qiscus.com");
     }
 
     public static SampleApplication getInstance() {
