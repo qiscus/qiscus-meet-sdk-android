@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/qiscusBlue">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:textStyle="bold"
+                        android:textSize="30sp"
+                        android:textColor="@color/white"
+                        android:text="Select Type Of"/>
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:textStyle="bold"
+                        android:textSize="30sp"
+                        android:textColor="@color/white"
+                        android:text="Conference"/>
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:textAlignment="center"
+                        android:textSize="14sp"
+                        android:textColor="@color/white"
+                        android:text="In just one touch, with one click"/>
+
+                <TextView
+                        android:id="@+id/et_room_id"
+                        android:layout_marginTop="18dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"/>
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="15dp"
+                    android:gravity="center_horizontal">
+                <Switch
+                        android:id="@+id/switch_muted"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Audio Unmuted"
+                        android:backgroundTint="@color/white"
+                        android:switchPadding="12dp"
+                        android:theme="@style/SCBSwitch"
+                        android:textColor="@color/white"/>
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:paddingTop="42dp"
+                    android:orientation="horizontal">
+
+                <LinearLayout
+                        android:id="@+id/box_video_call"
+                        android:layout_width="174dp"
+                        android:layout_height="266dp"
+                        android:layout_marginRight="15dp"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical"
+                        android:background="@drawable/background_rectangle">
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal">
+                        <ImageView
+                                android:layout_width="122.21dp"
+                                android:layout_height="117.88dp"
+                                android:src="@drawable/ic_video"/>
+                    </LinearLayout>
+
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="27dp"
+                            android:textAlignment="center"
+                            android:textColor="@color/qiscusBlue"
+                            android:textStyle="bold"
+                            android:textSize="18sp"
+                            android:text="Video Call"/>
+
+                </LinearLayout>
+                <LinearLayout
+                        android:id="@+id/box_voice_call"
+                        android:layout_width="174dp"
+                        android:layout_height="266dp"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical"
+                        android:background="@drawable/background_rectangle">
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal">
+                            <ImageView
+                                android:layout_width="122.21dp"
+                                android:layout_height="117.88dp"
+                                android:src="@drawable/ic_voice"/>
+                    </LinearLayout>
+
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="27dp"
+                            android:textAlignment="center"
+                            android:textColor="@color/qiscusBlue"
+                            android:textStyle="bold"
+                            android:textSize="18sp"
+                            android:text="Voice Call"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+</RelativeLayout>

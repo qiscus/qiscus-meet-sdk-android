@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Qiscus Meet</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_call">CallActivity</string>
+    <string name="title_activity_chat">ChatActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

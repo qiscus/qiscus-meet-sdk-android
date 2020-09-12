@@ -1,0 +1,27 @@
+[
+  {
+    "id": "user1_sample_call@example.com",
+    "name": "User 1 Sample Call",
+    "avatar_url": "https://d1edrlpyc25xu0.cloudfront.net/kiwari-prod/image/upload/75r6s_jOHa/1507541871-avatar-mine.png"
+  },
+  {
+    "id": "user2_sample_call@example.com",
+    "name": "User 2 Sample Call",
+    "avatar_url": "https://d1edrlpyc25xu0.cloudfront.net/kiwari-prod/image/upload/75r6s_jOHa/1507541871-avatar-mine.png"
+  },
+  {
+    "id": "user3_sample_call@example.com",
+    "name": "User 3 Sample Call",
+    "avatar_url": "https://d1edrlpyc25xu0.cloudfront.net/kiwari-prod/image/upload/75r6s_jOHa/1507541871-avatar-mine.png"
+  },
+  {
+    "id": "user4_sample_call@example.com",
+    "name": "User 4 Sample Call",
+    "avatar_url": "https://d1edrlpyc25xu0.cloudfront.net/kiwari-prod/image/upload/75r6s_jOHa/1507541871-avatar-mine.png"
+  },
+  {
+    "id": "user5_sample_call@example.com",
+    "name": "User 5 Sample Call",
+    "avatar_url": "https://d1edrlpyc25xu0.cloudfront.net/kiwari-prod/image/upload/75r6s_jOHa/1507541871-avatar-mine.png"
+  }
+]

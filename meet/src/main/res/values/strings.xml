@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">meet</string>
+    <string name="channel_name">Notification Call</string>
+    <string name="channel_description">This notification for meet</string>
+</resources>
