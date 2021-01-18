@@ -2,8 +2,10 @@ package com.qiscus.rtc.sample;
 
 import android.content.Intent;
 import android.os.Handler;
+
 import androidx.multidex.MultiDexApplication;
 import androidx.core.app.NotificationCompat;
+
 import android.util.Log;
 import android.widget.Toast;
 
@@ -56,7 +58,7 @@ public class SampleApplication extends MultiDexApplication {
             EventBus.getDefault().register(this);
         }
 
-        QiscusMeet.setup(this, "https://meet.qiscus.com");
+        QiscusMeet.setup(this, "meetstage-iec22sd", "https://call.qiscus.com");
     }
 
     public static SampleApplication getInstance() {

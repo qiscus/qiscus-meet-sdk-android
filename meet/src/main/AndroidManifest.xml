@@ -12,7 +12,6 @@
         <activity
                 android:supportsPictureInPicture="true"
                 android:launchMode="singleTask"
-                android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
                 android:name=".QiscusMeetActivity">
         </activity>
     </application>

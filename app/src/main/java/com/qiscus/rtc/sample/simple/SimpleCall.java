@@ -1,13 +1,16 @@
 package com.qiscus.rtc.sample.simple;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.qiscus.meet.MeetJwtConfig;
 import com.qiscus.meet.QiscusMeet;
 import com.qiscus.rtc.sample.R;
+import com.qiscus.sdk.Qiscus;
 
 public class SimpleCall extends AppCompatActivity {
 
@@ -23,7 +26,10 @@ public class SimpleCall extends AppCompatActivity {
         btnStart = findViewById(R.id.btn_start);
         etRoomId = findViewById(R.id.et_room);
         etName = findViewById(R.id.et_name);
-
+        MeetJwtConfig meetJwtConfig = new MeetJwtConfig();
+        meetJwtConfig.setEmail("marco@qiscus.com");
+        meetJwtConfig.build();
+        QiscusMeet.config().setJwtConfig(meetJwtConfig);
         btnStart.setOnClickListener(v -> {
             startCall();
         });
