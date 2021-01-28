@@ -14,7 +14,7 @@ publishing {
                 configurations.getByName("releaseCompileClasspath").getResolvedConfiguration().getFirstLevelModuleDependencies().each {
                     if (it.moduleGroup == 'com.android.databinding' || it.moduleVersion == 'unspecified') {
                         println("ignoring dependency ${it.moduleGroup}:${it.moduleName}:${it.moduleVersion}")
-                        return;
+                        return
                     }
 
                     def dependency = dependencies.appendNode('dependency')

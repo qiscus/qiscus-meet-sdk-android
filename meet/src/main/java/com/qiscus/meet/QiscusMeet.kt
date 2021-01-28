@@ -15,14 +15,22 @@ import java.net.URL
 class QiscusMeet {
 
     companion object {
-        private lateinit var application: Application
-        private lateinit var url: URL
+        lateinit var application: Application
+        private var url: URL = URL("https://call.qiscus.com")
+        private var appId: String = ""
         private lateinit var config: JitsiMeetConferenceOptions
-
+        private lateinit var qiscusConfig: MeetConfig
 
         @JvmStatic
-        fun setup(application: Application, url: String) {
+        fun setup(application: Application, appId: String, url: String) {
+            this.qiscusConfig = MeetConfig()
             this.application = application
+            this.appId = appId
+
+            if (appId.isEmpty()) {
+                throw RuntimeException("Please init Qiscus appId first")
+            }
+
             try {
                 this.url = URL(url)
             } catch (e: MalformedURLException) {
@@ -39,29 +47,72 @@ class QiscusMeet {
         }
 
         @JvmStatic
-        fun call(): MeetInfo {
+        fun config(): MeetConfig {
             if (!this::application.isInitialized) {
                 throw RuntimeException("Please init QiscusMeet first")
             }
-            return MeetInfo(url.toString(), TypeCaller.CALLER)
+            return qiscusConfig
+        }
+
+        @JvmStatic
+        fun call(): MeetInfo {
+            if (!this::application.isInitialized && !hasSetupAppId()) {
+                throw RuntimeException("Please init QiscusMeet first")
+            }
+            return MeetInfo(url.toString(), QiscusMeet.TypeCaller.CALLER, qiscusConfig)
         }
 
         @JvmStatic
         fun answer(): MeetInfo {
-            if (!this::application.isInitialized) {
+            if (!this::application.isInitialized && !hasSetupAppId()) {
                 throw RuntimeException("Please init QiscusMeet first")
             }
-            return MeetInfo(url.toString(), TypeCaller.CALLEE)
+            return MeetInfo(url.toString(), QiscusMeet.TypeCaller.CALLEE, qiscusConfig)
+        }
+
+        @JvmStatic
+        fun sendEvent() {
+
         }
 
         @JvmStatic
         fun event(event: QiscusMeetEvent, roomId: String) {
             EventBus.getDefault().post(MeetEvent(roomId, event))
         }
+
+        /**
+         * For checking is Qiscus Meet appId has been setup
+         *
+         * @return true if already setup, false if not yet
+         */
+        @JvmStatic
+        fun hasSetupAppId(): Boolean {
+            return appId.isEmpty()
+        }
+
+        /**
+         * Getting Qiscus Meet appId
+         *
+         * @return string
+         */
+        @JvmStatic
+        fun getAppID(): String {
+            return this.appId
+        }
+
+        /**
+         * Getting URL Qiscus Meet
+         *
+         * @return URL
+         */
+        @JvmStatic
+        fun getURL(): URL {
+            return this.url
+        }
     }
 
     enum class Type {
-        VOICE, VIDEO
+        VOICE, VIDEO, CONFERENCE
     }
 
     enum class TypeCaller {
