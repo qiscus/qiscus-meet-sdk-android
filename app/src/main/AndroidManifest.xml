@@ -59,6 +59,11 @@
                     android:scheme="qiscus" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".service.EndCall"
+            android:enabled="true"
+            android:launchMode="singleTop" />
     </application>
 
 </manifest>
