@@ -2,7 +2,10 @@ package com.qiscus.rtc.sample.simple;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.IntentService;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -10,6 +13,7 @@ import android.widget.Toast;
 import com.qiscus.meet.MeetJwtConfig;
 import com.qiscus.meet.QiscusMeet;
 import com.qiscus.rtc.sample.R;
+import com.qiscus.rtc.sample.service.EndCall;
 import com.qiscus.sdk.Qiscus;
 
 public class SimpleCall extends AppCompatActivity {
@@ -57,5 +61,6 @@ public class SimpleCall extends AppCompatActivity {
                 .setDisplayName(name)
                 .setAvatar(avatar)
                 .build(this);
+//        startService(new Intent(this, EndCall.class));
     }
 }
