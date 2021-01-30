@@ -39,9 +39,9 @@ class QiscusMeet {
             }
 
             config = JitsiMeetConferenceOptions.Builder()
-                .setServerURL(this.url)
-                .setWelcomePageEnabled(false)
-                .build()
+                    .setServerURL(this.url)
+                    .setWelcomePageEnabled(false)
+                    .build()
 
             JitsiMeet.setDefaultConferenceOptions(config)
         }
@@ -60,6 +60,11 @@ class QiscusMeet {
                 throw RuntimeException("Please init QiscusMeet first")
             }
             return MeetInfo(url.toString(), QiscusMeet.TypeCaller.CALLER, qiscusConfig)
+        }
+
+        @JvmStatic
+        fun endCall() {
+            QiscusMeetActivity.endCall()
         }
 
         @JvmStatic

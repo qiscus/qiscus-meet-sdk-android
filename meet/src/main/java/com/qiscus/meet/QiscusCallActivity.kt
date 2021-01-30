@@ -1,14 +1,18 @@
 package com.qiscus.meet
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Handler
 import android.os.Parcelable
 import android.util.Log
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.facebook.react.bridge.UiThreadUtil.runOnUiThread
 import com.facebook.react.modules.core.PermissionListener
 import org.greenrobot.eventbus.EventBus
 import org.jitsi.meet.sdk.JitsiMeetActivityInterface
@@ -26,7 +30,7 @@ class QiscusCallActivity : AppCompatActivity(), JitsiMeetActivityInterface {
         private const val QISCUS_MEET_CONFERENCE_OPTIONS = "QiscusMeetConferenceOptions"
         private const val QISCUS_MEET_CONFERENCE_TYPE = "QiscusConferenceType"
         private val RECORD_REQUEST_CODE = 101
-
+        var activity:Activity?=null
         fun launch(
             context: Context,
             options: JitsiMeetConferenceOptions?,
@@ -40,10 +44,12 @@ class QiscusCallActivity : AppCompatActivity(), JitsiMeetActivityInterface {
             intent.putExtra(QISCUS_MEET_CONFERENCE_ROOM_ID, roomId)
             context.startActivity(intent)
         }
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        activity = this
         if (MeetHolder.getJitsiView() == null) {
             val options =
                 intent.getParcelableExtra<Parcelable>(QISCUS_MEET_CONFERENCE_OPTIONS) as? JitsiMeetConferenceOptions
@@ -94,23 +100,6 @@ class QiscusCallActivity : AppCompatActivity(), JitsiMeetActivityInterface {
     }
 
     private fun stopCall() {
-        runOnUiThread {
-            MeetHolder.getJitsiView()?.leave()
-            MeetHolder.removeJitsiView()
-            val intent = Intent(this, CreateNotfication::class.java)
-            this.stopService(intent)
-        }
-        val typeCall: QiscusMeet.Type = MeetSharePref.getType().let {
-            when (it) {
-                QiscusMeet.Type.CONFERENCE.toString() -> QiscusMeet.Type.CONFERENCE
-                QiscusMeet.Type.VOICE.toString() -> QiscusMeet.Type.VOICE
-                QiscusMeet.Type.VIDEO.toString() -> QiscusMeet.Type.VIDEO
-                else -> QiscusMeet.Type.CONFERENCE
-            }
-        }
-        EventBus.getDefault()
-            .post(MeetTerminatedConfEvent(MeetSharePref.getRoomId(), null, typeCall))
-
         finish()
     }
 
@@ -118,8 +107,10 @@ class QiscusCallActivity : AppCompatActivity(), JitsiMeetActivityInterface {
         // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int,
-                                            permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>, grantResults: IntArray
+    ) {
         when (requestCode) {
             RECORD_REQUEST_CODE -> {
 

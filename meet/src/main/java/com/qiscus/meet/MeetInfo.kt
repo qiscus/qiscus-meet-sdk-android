@@ -4,6 +4,7 @@ package com.qiscus.meet
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import okhttp3.*
 import org.jitsi.meet.sdk.BuildConfig
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
@@ -26,8 +27,7 @@ class MeetInfo(url: String, typeCaller: QiscusMeet.TypeCaller, config: MeetConfi
     private var url: String = url
     private var typeCaller: QiscusMeet.TypeCaller = typeCaller
     private var muted: Boolean = false
-    private var config:MeetConfig = config
-
+    private var config: MeetConfig = config
     fun setRoomId(roomId: String) = apply { this.roomId = roomId }
 
     fun setTypeCall(type: QiscusMeet.Type) = apply { this.type = type }
@@ -41,6 +41,7 @@ class MeetInfo(url: String, typeCaller: QiscusMeet.TypeCaller, config: MeetConfi
     fun build(context: Context) {
         generateToken(context, displayName, avatar)
     }
+
 
     private fun call(context: Context, appId: String, token: String) {
         if (typeCaller.equals(QiscusMeet.TypeCaller.CALLER)) {
@@ -98,6 +99,7 @@ class MeetInfo(url: String, typeCaller: QiscusMeet.TypeCaller, config: MeetConfi
             })
         }
     }
+
 
     private fun generateToken(context: Context, name: String, avatar: String?) {
         val JSON = MediaType.parse("application/json; charset=utf-8")
