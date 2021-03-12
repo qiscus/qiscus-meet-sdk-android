@@ -1,20 +1,16 @@
 package com.qiscus.meet
 
-import android.app.Activity
-import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.widget.Toast
-import androidx.core.content.ContextCompat
-import com.facebook.react.bridge.UiThreadUtil
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.jitsi.meet.sdk.JitsiMeetActivity
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
 import org.jitsi.meet.sdk.JitsiMeetFragment
 import org.jitsi.meet.sdk.JitsiMeetView
+import java.util.HashMap
 
 
 /**
@@ -26,19 +22,21 @@ class QiscusMeetActivity : JitsiMeetActivity() {
 
     val TAG = this.javaClass.simpleName
     lateinit var roomId: String
-
+    var enableBackpressed:Boolean = true
 
     companion object {
         val room = "roomid"
+        val backpressed = "backpressed"
         const val ACTION_JITSI_MEET_CONFERENCE = "org.jitsi.meet.CONFERENCE"
         const val JITSI_MEET_CONFERENCE_OPTIONS = "JitsiMeetConferenceOptions"
         var activity: QiscusMeetActivity? = null
-        fun launch(context: Context, options: JitsiMeetConferenceOptions?, roomid: String) {
+        fun launch(context: Context, options: JitsiMeetConferenceOptions?, roomid: String, enableBackpressed: Boolean) {
             val intent = Intent(context, QiscusMeetActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             intent.action = ACTION_JITSI_MEET_CONFERENCE
             intent.putExtra(JITSI_MEET_CONFERENCE_OPTIONS, options)
             intent.putExtra(room, roomid)
+            intent.putExtra(backpressed,enableBackpressed)
             context.startActivity(intent)
         }
 
@@ -69,6 +67,7 @@ class QiscusMeetActivity : JitsiMeetActivity() {
         super.onCreate(savedInstanceState)
         activity = this
         roomId = intent.getStringExtra(room)
+        enableBackpressed = intent.getBooleanExtra(backpressed,true)
     }
 
     override fun onStart() {
@@ -95,19 +94,29 @@ class QiscusMeetActivity : JitsiMeetActivity() {
         super.join(options)
     }
 
-    override fun onConferenceTerminated(data: MutableMap<String, Any>?) {
-        super.onConferenceTerminated(data)
-        EventBus.getDefault().post(MeetTerminatedConfEvent(roomId, data, null))
+    override fun onConferenceTerminated(extraData: HashMap<String, Any>?) {
+        super.onConferenceTerminated(extraData)
+                EventBus.getDefault().post(MeetTerminatedConfEvent(roomId, extraData, null))
 //        val intent = Intent(this, CreateNotfication::class.java)
-        this.stopService(intent)
+//        this.stopService(intent)
     }
 
-    override fun onConferenceJoined(data: MutableMap<String, Any>?) {
-        super.onConferenceJoined(data)
-
-//        val intent = Intent(this, CreateNotfication::class.java)
-        ContextCompat.startForegroundService(this, intent)
+    override fun onConferenceJoined(extraData: HashMap<String, Any>?) {
+        super.onConferenceJoined(extraData)
     }
+//    override fun onConferenceTerminated(data: MutableMap<String, Any>?) {
+//        super.onConferenceTerminated(data)
+//        EventBus.getDefault().post(MeetTerminatedConfEvent(roomId, data, null))
+////        val intent = Intent(this, CreateNotfication::class.java)
+//        this.stopService(intent)
+//    }
+//
+//    override fun onConferenceJoined(data: MutableMap<String, Any>?) {
+//        super.onConferenceJoined(data)
+//
+////        val intent = Intent(this, CreateNotfication::class.java)
+//        ContextCompat.startForegroundService(this, intent)
+//    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -117,4 +126,9 @@ class QiscusMeetActivity : JitsiMeetActivity() {
 //        notificationManager.cancel(0)
     }
 
+    override fun onBackPressed() {
+        if (enableBackpressed){
+            super.onBackPressed()
+        }
+    }
 }

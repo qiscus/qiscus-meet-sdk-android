@@ -4,7 +4,6 @@ package com.qiscus.meet
 
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import okhttp3.*
 import org.jitsi.meet.sdk.BuildConfig
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
@@ -20,6 +19,7 @@ import java.io.IOException
  */
 class MeetInfo(url: String, typeCaller: QiscusMeet.TypeCaller, config: MeetConfig) {
 
+    private var enableBackpressed: Boolean = true
     private var roomId: String = ""
     private var type: QiscusMeet.Type = QiscusMeet.Type.VIDEO
     private var displayName: String = "Guest"
@@ -38,10 +38,11 @@ class MeetInfo(url: String, typeCaller: QiscusMeet.TypeCaller, config: MeetConfi
 
     fun setMuted(muted: Boolean) = apply { this.muted = muted }
 
+    fun setEnableBackpressed(status:Boolean) = apply { this.enableBackpressed = status }
+
     fun build(context: Context) {
         generateToken(context, displayName, avatar)
     }
-
 
     private fun call(context: Context, appId: String, token: String) {
         if (typeCaller.equals(QiscusMeet.TypeCaller.CALLER)) {
@@ -49,7 +50,6 @@ class MeetInfo(url: String, typeCaller: QiscusMeet.TypeCaller, config: MeetConfi
             val roomUrl: String
 
             roomUrl = "$appId/$roomId"
-
             val options = JitsiMeetConferenceOptions.Builder()
                 .setRoom(roomUrl)
                 .setAudioMuted(muted)
@@ -62,7 +62,7 @@ class MeetInfo(url: String, typeCaller: QiscusMeet.TypeCaller, config: MeetConfi
                 .setFeatureFlag("meeting-name.enabled", config.isEnableRoomName())
                 .setToken(token)
                 .build()
-            QiscusMeetActivity.launch(context, options, roomId)
+            QiscusMeetActivity.launch(context, options, roomUrl, enableBackpressed)
         } else {
             val client = OkHttpClient()
             val request: Request = Request.Builder()
@@ -88,7 +88,7 @@ class MeetInfo(url: String, typeCaller: QiscusMeet.TypeCaller, config: MeetConfi
                                 .setToken(token)
                                 .build()
 
-                            QiscusMeetActivity.launch(context, options, roomId)
+                            QiscusMeetActivity.launch(context, options, roomId, enableBackpressed)
                         } else {
                             Log.d("QiscusMeet", "You haven't participants")
                         }
