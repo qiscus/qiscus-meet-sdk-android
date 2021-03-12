@@ -59,6 +59,7 @@ public class SimpleCall extends AppCompatActivity {
                 .setTypeCall(QiscusMeet.Type.VOICE)
                 .setRoomId(roomId)
                 .setDisplayName(name)
+                .setEnableBackpressed(false)
                 .setAvatar(avatar)
                 .build(this);
 //        startService(new Intent(this, EndCall.class));
