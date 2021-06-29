@@ -28,6 +28,7 @@ class MeetInfo(url: String, typeCaller: QiscusMeet.TypeCaller, config: MeetConfi
     private var typeCaller: QiscusMeet.TypeCaller = typeCaller
     private var muted: Boolean = false
     private var config: MeetConfig = config
+    private var chat:Boolean = false
     fun setRoomId(roomId: String) = apply { this.roomId = roomId }
 
     fun setTypeCall(type: QiscusMeet.Type) = apply { this.type = type }
@@ -59,7 +60,7 @@ class MeetInfo(url: String, typeCaller: QiscusMeet.TypeCaller, config: MeetConfi
                 .setFeatureFlag("chat.enabled", config.getChat())
                 .setFeatureFlag("overflowMenu.enabled", config.getOverflowMenu())
                 .setFeatureFlag("videoThumbnail.enabled", config.getVideoThumbnailsOn())
-                .setFeatureFlag("meeting-name.enabled", config.isEnableRoomName())
+                .setFeatureFlag("meeting-name.enabled",config.isEnableRoomName())
                 .setToken(token)
                 .build()
             QiscusMeetActivity.launch(context, options, roomUrl, enableBackpressed)
@@ -132,15 +133,19 @@ class MeetInfo(url: String, typeCaller: QiscusMeet.TypeCaller, config: MeetConfi
                 if (BuildConfig.DEBUG && response.body() == null) {
                     error("Assertion failed")
                 }
-                val jsonData = response.body()!!.string()
-                try {
-                    val jsonObject = JSONObject(jsonData)
-                    val token: String = jsonObject["token"] as String
+                if (response.code()==200){
+                    val jsonData = response.body()!!.string()
+                    try {
+                        val jsonObject = JSONObject(jsonData)
+                        val token: String = jsonObject["token"] as String
 
-                    call(context, objectPayload.get("appId") as String, token)
+                        call(context, objectPayload.get("appId") as String, token)
 
-                } catch (e: JSONException) {
-                    e.printStackTrace()
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
+                    }
+                } else {
+                    Log.d("FAILED","Response Code: ${response.code()} ${response.message()}")
                 }
             }
         })

@@ -66,7 +66,7 @@ class QiscusMeetActivity : JitsiMeetActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity = this
-        roomId = intent.getStringExtra(room)
+        roomId = intent.getStringExtra(room)!!
         enableBackpressed = intent.getBooleanExtra(backpressed,true)
     }
 
@@ -103,6 +103,16 @@ class QiscusMeetActivity : JitsiMeetActivity() {
 
     override fun onConferenceJoined(extraData: HashMap<String, Any>?) {
         super.onConferenceJoined(extraData)
+    }
+
+    override fun onParticipantJoined(extraData: HashMap<String, Any>?) {
+        super.onParticipantJoined(extraData)
+        EventBus.getDefault().post(MeetParticipantJoinedEvent(roomId,extraData,null))
+    }
+
+    override fun onParticipantLeft(extraData: HashMap<String, Any>?) {
+        super.onParticipantLeft(extraData)
+        EventBus.getDefault().post(MeetParticipantLeftEvent(roomId,extraData,null))
     }
 //    override fun onConferenceTerminated(data: MutableMap<String, Any>?) {
 //        super.onConferenceTerminated(data)

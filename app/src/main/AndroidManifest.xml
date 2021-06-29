@@ -27,36 +27,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".UpdateActivity"></activity>
         <activity
             android:name=".simple.SimpleCall"
-            android:launchMode="singleInstance"></activity>
-        <activity android:name=".simple.IncomingCallActivity"></activity>
+            android:launchMode="singleInstance" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".simple.CallActivity"
-            android:label="@string/title_activity_call"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".integration.ChatActivity"
-            android:label="@string/title_activity_chat"
-            android:theme="@style/ToolbarActionMode" />
-        <activity android:name=".integration.ContactActivity" />
-        <activity android:name=".integration.ListContactActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="meet"
-                    android:scheme="qiscus" />
             </intent-filter>
         </activity>
 

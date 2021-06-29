@@ -21,7 +21,6 @@ allprojects {
         google()
         jcenter()
         maven { url "https://artifactory.qiscus.com/artifactory/qiscus-meet" }
-        maven { url "https://dl.bintray.com/qiscustech/maven" }
         maven { url 'https://jitpack.io' }
     }
 }

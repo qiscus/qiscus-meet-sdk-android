@@ -10,6 +10,7 @@
 
     <EditText
         android:id="@+id/et_name"
+        android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -17,6 +18,7 @@
 
     <EditText
         android:id="@+id/et_room"
+        android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"

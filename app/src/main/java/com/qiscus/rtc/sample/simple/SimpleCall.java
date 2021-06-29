@@ -10,11 +10,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.qiscus.meet.MeetConfig;
+import com.qiscus.meet.MeetInfo;
 import com.qiscus.meet.MeetJwtConfig;
 import com.qiscus.meet.QiscusMeet;
 import com.qiscus.rtc.sample.R;
 import com.qiscus.rtc.sample.service.EndCall;
-import com.qiscus.sdk.Qiscus;
 
 public class SimpleCall extends AppCompatActivity {
 
@@ -54,11 +55,11 @@ public class SimpleCall extends AppCompatActivity {
             Toast.makeText(this, "room id required", Toast.LENGTH_SHORT).show();
             return;
         }
-
         QiscusMeet.call()
-                .setTypeCall(QiscusMeet.Type.VOICE)
+                .setTypeCall(QiscusMeet.Type.CONFERENCE)
                 .setRoomId(roomId)
                 .setDisplayName(name)
+                .setMuted(false)
                 .setEnableBackpressed(false)
                 .setAvatar(avatar)
                 .build(this);

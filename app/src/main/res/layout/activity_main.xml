@@ -13,14 +13,4 @@
         android:text="Simple Call Application"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-    <Button
-        android:id="@+id/btn_chat_integration"
-        android:text="Chat SDK Integration"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <Button
-        android:id="@+id/btn_logout"
-        android:text="Logout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-</LinearLayout>
+   </LinearLayout>
