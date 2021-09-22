@@ -87,13 +87,6 @@ class QiscusCallActivity : AppCompatActivity(), JitsiMeetActivityInterface {
                 override fun onConferenceWillJoin(p0: MutableMap<String, Any>?) {
                     onJoined()
                 }
-
-                override fun onParticipantJoined(p0: MutableMap<String, Any>?) {
-
-                }
-
-                override fun onParticipantLeft(p0: MutableMap<String, Any>?) {
-                }
             }
 
         }

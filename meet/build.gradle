@@ -53,7 +53,7 @@ buildscript {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation('com.qiscus.meet:meet-qiscus:3.3.0') { transitive = true }
+    implementation('com.qiscus.meet:meet-qiscus:3.9.1') { transitive = true }
     implementation 'org.greenrobot:eventbus:3.2.0'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
