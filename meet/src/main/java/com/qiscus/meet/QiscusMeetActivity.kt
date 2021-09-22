@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import com.google.gson.Gson
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.jitsi.meet.sdk.JitsiMeetActivity
@@ -34,7 +35,7 @@ class QiscusMeetActivity : JitsiMeetActivity() {
             val intent = Intent(context, QiscusMeetActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             intent.action = ACTION_JITSI_MEET_CONFERENCE
-            intent.putExtra(JITSI_MEET_CONFERENCE_OPTIONS, options)
+            intent.putExtra(JITSI_MEET_CONFERENCE_OPTIONS, Gson().toJson(options))
             intent.putExtra(room, roomid)
             intent.putExtra(backpressed,enableBackpressed)
             context.startActivity(intent)
@@ -90,8 +91,12 @@ class QiscusMeetActivity : JitsiMeetActivity() {
         }
     }
 
-    override fun join(options: JitsiMeetConferenceOptions?) {
-        super.join(options)
+    override fun initialize() {
+        val meetOptions = Gson().fromJson(
+            intent.getStringExtra(JITSI_MEET_CONFERENCE_OPTIONS),
+            JitsiMeetConferenceOptions::class.java
+        )
+        this.join(meetOptions)
     }
 
     override fun onConferenceTerminated(extraData: HashMap<String, Any>?) {
