@@ -1,6 +1,7 @@
 package com.qiscus.rtc.sample;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.multidex.MultiDexApplication;
 
@@ -8,15 +9,19 @@ import com.qiscus.meet.MeetParticipantJoinedEvent;
 import com.qiscus.meet.MeetParticipantLeftEvent;
 import com.qiscus.meet.MeetTerminatedConfEvent;
 import com.qiscus.meet.QiscusMeet;
+import com.qiscus.meet.RecordingEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Objects;
+
 public class SampleApplication extends MultiDexApplication {
 
     private static SampleApplication instance;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -34,7 +39,6 @@ public class SampleApplication extends MultiDexApplication {
     }
 
 
-
     private void handleCustomEvent(String roomId, String event) {
         if (event.equalsIgnoreCase("rejected")) {
             QiscusMeet.event(QiscusMeet.QiscusMeetEvent.REJECTED, roomId);
@@ -46,14 +50,21 @@ public class SampleApplication extends MultiDexApplication {
         Log.d("ON TerminatedConf", event.getData().toString());
 
     }
+
     @Subscribe
-    public void onParticipantLeft(MeetParticipantLeftEvent event){
+    public void onParticipantLeft(MeetParticipantLeftEvent event) {
         Log.d("ON PARTICIPANT LEFT", event.getData().toString());
         QiscusMeet.endCall();
     }
 
     @Subscribe
-    public void onParticipantJoined(MeetParticipantJoinedEvent event){
+    public void onParticipantJoined(MeetParticipantJoinedEvent event) {
         Log.d("ON PARTICIPANT JOINED", event.getData().toString());
+    }
+
+    @Subscribe
+    public void onRecordingStatus(RecordingEvent event) {
+        Log.d("ON RECORDING STATUS", Objects.requireNonNull(event.toString()));
+        Toast.makeText(getApplicationContext(), event.toString(), Toast.LENGTH_SHORT).show();
     }
 }
