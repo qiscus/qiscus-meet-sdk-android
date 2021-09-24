@@ -27,11 +27,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".UpdateActivity"></activity>
+        <activity android:name=".UpdateActivity" />
         <activity
             android:name=".simple.SimpleCall"
             android:launchMode="singleInstance" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
