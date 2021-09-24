@@ -21,7 +21,7 @@ class MeetJwtConfig {
 
     fun build() {
         jwtPayload = JSONObject()
-        jwtPayload.put("appId", appId)
+        jwtPayload.put("app_id", appId)
         jwtPayload.put("email", email)
         jwtPayload.put("moderator", moderator)
         jwtPayload.put("iss", iss)

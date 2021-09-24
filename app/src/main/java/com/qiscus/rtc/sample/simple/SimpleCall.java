@@ -34,7 +34,13 @@ public class SimpleCall extends AppCompatActivity {
         MeetJwtConfig meetJwtConfig = new MeetJwtConfig();
         meetJwtConfig.setEmail("marco@qiscus.com");
         meetJwtConfig.build();
+        //Setup Config
         QiscusMeet.config().setJwtConfig(meetJwtConfig);
+        QiscusMeet.config().setChat(true);
+        QiscusMeet.config().setOverflowMenu(true);
+        QiscusMeet.config().setAutoRecording(true);
+        QiscusMeet.config().setEnableBackPressed(true);
+        QiscusMeet.config().setScreenSharing(true);
         btnStart.setOnClickListener(v -> {
             startCall();
         });
@@ -55,12 +61,12 @@ public class SimpleCall extends AppCompatActivity {
             Toast.makeText(this, "room id required", Toast.LENGTH_SHORT).show();
             return;
         }
+        //Start Call
         QiscusMeet.call()
                 .setTypeCall(QiscusMeet.Type.CONFERENCE)
                 .setRoomId(roomId)
                 .setDisplayName(name)
                 .setMuted(false)
-                .setEnableBackpressed(false)
                 .setAvatar(avatar)
                 .build(this);
 //        startService(new Intent(this, EndCall.class));

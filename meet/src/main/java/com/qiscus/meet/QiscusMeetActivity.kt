@@ -24,23 +24,45 @@ class QiscusMeetActivity : JitsiMeetActivity() {
     val TAG = this.javaClass.simpleName
     lateinit var roomId: String
     var enableBackpressed:Boolean = true
-
+    var recordingEvent: RecordingEvent = RecordingEvent()
     companion object {
         val room = "roomid"
         val backpressed = "backpressed"
+        val recording = "recording"
         const val ACTION_JITSI_MEET_CONFERENCE = "org.jitsi.meet.CONFERENCE"
         const val JITSI_MEET_CONFERENCE_OPTIONS = "JitsiMeetConferenceOptions"
         var activity: QiscusMeetActivity? = null
-        fun launch(context: Context, options: JitsiMeetConferenceOptions?, roomid: String, enableBackpressed: Boolean) {
+        fun launch(
+            context: Context,
+            options: JitsiMeetConferenceOptions?,
+            roomid: String,
+            enableBackpressed: Boolean
+        ) {
             val intent = Intent(context, QiscusMeetActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             intent.action = ACTION_JITSI_MEET_CONFERENCE
             intent.putExtra(JITSI_MEET_CONFERENCE_OPTIONS, Gson().toJson(options))
             intent.putExtra(room, roomid)
-            intent.putExtra(backpressed,enableBackpressed)
+            intent.putExtra(backpressed, enableBackpressed)
             context.startActivity(intent)
         }
-
+        fun launchWithRecording(
+            context: Context,
+            options: JitsiMeetConferenceOptions?,
+            roomid: String,
+            enableBackpressed: Boolean,
+            recordingEvent: RecordingEvent
+        ) {
+            val intent = Intent(context, QiscusMeetActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            intent.action = ACTION_JITSI_MEET_CONFERENCE
+            intent.putExtra(JITSI_MEET_CONFERENCE_OPTIONS, Gson().toJson(options))
+            intent.putExtra(room, roomid)
+            intent.putExtra(backpressed, enableBackpressed)
+            intent.putExtra(recording, recordingEvent)
+            intent.putExtra("isRecording",true)
+            context.startActivity(intent)
+        }
         fun endCall() {
                 MeetHolder.getJitsiView()?.leave()
                 MeetHolder.removeJitsiView()
@@ -68,7 +90,11 @@ class QiscusMeetActivity : JitsiMeetActivity() {
         super.onCreate(savedInstanceState)
         activity = this
         roomId = intent.getStringExtra(room)!!
-        enableBackpressed = intent.getBooleanExtra(backpressed,true)
+        enableBackpressed = intent.getBooleanExtra(backpressed, true)
+        if (intent.getBooleanExtra("isRecording",false)!!){
+            recordingEvent = intent.getParcelableExtra(recording)!!
+            EventBus.getDefault().post(recordingEvent)
+        }
     }
 
     override fun onStart() {

@@ -7,10 +7,12 @@ import android.util.Log
 import okhttp3.*
 import org.jitsi.meet.sdk.BuildConfig
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
+import org.jitsi.meet.sdk.JitsiMeetUserInfo
 import org.json.JSONException
 import org.json.JSONObject
 import timber.log.Timber
 import java.io.IOException
+import java.net.URL
 
 /**
  * Created on : 14/06/19
@@ -19,7 +21,6 @@ import java.io.IOException
  */
 class MeetInfo(url: String, typeCaller: QiscusMeet.TypeCaller, config: MeetConfig) {
 
-    private var enableBackpressed: Boolean = true
     private var roomId: String = ""
     private var type: QiscusMeet.Type = QiscusMeet.Type.VIDEO
     private var displayName: String = "Guest"
@@ -28,7 +29,6 @@ class MeetInfo(url: String, typeCaller: QiscusMeet.TypeCaller, config: MeetConfi
     private var typeCaller: QiscusMeet.TypeCaller = typeCaller
     private var muted: Boolean = false
     private var config: MeetConfig = config
-    private var chat:Boolean = false
     fun setRoomId(roomId: String) = apply { this.roomId = roomId }
 
     fun setTypeCall(type: QiscusMeet.Type) = apply { this.type = type }
@@ -39,18 +39,19 @@ class MeetInfo(url: String, typeCaller: QiscusMeet.TypeCaller, config: MeetConfi
 
     fun setMuted(muted: Boolean) = apply { this.muted = muted }
 
-    fun setEnableBackpressed(status:Boolean) = apply { this.enableBackpressed = status }
-
     fun build(context: Context) {
         generateToken(context, displayName, avatar)
     }
 
+
     private fun call(context: Context, appId: String, token: String) {
         if (typeCaller.equals(QiscusMeet.TypeCaller.CALLER)) {
-
-            val roomUrl: String
-
-            roomUrl = "$appId/$roomId"
+            val objectPayload = config.getJwtConfig().getJwtPayload()
+            val roomUrl: String = "$appId/$roomId"
+            val userInfo = JitsiMeetUserInfo()
+            userInfo.avatar = URL(avatar)
+            userInfo.displayName = displayName
+            userInfo.email = objectPayload.get("email").toString()
             val options = JitsiMeetConferenceOptions.Builder()
                 .setRoom(roomUrl)
                 .setAudioMuted(muted)
@@ -58,12 +59,24 @@ class MeetInfo(url: String, typeCaller: QiscusMeet.TypeCaller, config: MeetConfi
                 .setFeatureFlag("pip.enabled", true)
                 .setFeatureFlag("requirepassword.enabled", config.getPassword())
                 .setFeatureFlag("chat.enabled", config.getChat())
-                .setFeatureFlag("overflowMenu.enabled", config.getOverflowMenu())
+                .setFeatureFlag("overflow-menu.enabled", config.getOverflowMenu())
                 .setFeatureFlag("videoThumbnail.enabled", config.getVideoThumbnailsOn())
-                .setFeatureFlag("meeting-name.enabled",config.isEnableRoomName())
+                .setFeatureFlag("meeting-name.enabled", config.isEnableRoomName())
+                .setFeatureFlag("android.screensharing.enabled", config.getScreenSharing())
                 .setToken(token)
-                .build()
-            QiscusMeetActivity.launch(context, options, roomUrl, enableBackpressed)
+                .setUserInfo(userInfo)
+                .setVideoMuted(false)
+            if (config.getAutoRecording()) {
+                options.setFeatureFlag("autoRecording.enabled", config.getAutoRecording())
+                getServerRecording(appId, context, options)
+            } else {
+                QiscusMeetActivity.launch(
+                    context,
+                    options.build(),
+                    roomUrl,
+                    config.getEnableBackPress()
+                )
+            }
         } else {
             val client = OkHttpClient()
             val request: Request = Request.Builder()
@@ -85,11 +98,16 @@ class MeetInfo(url: String, typeCaller: QiscusMeet.TypeCaller, config: MeetConfi
                         if (totalParticipants > 0) {
                             val options = JitsiMeetConferenceOptions.Builder()
                                 .setRoom(roomId)
+                                .setVideoMuted(false)
                                 .setAudioOnly(type == QiscusMeet.Type.VOICE)
                                 .setToken(token)
                                 .build()
-
-                            QiscusMeetActivity.launch(context, options, roomId, enableBackpressed)
+                            QiscusMeetActivity.launch(
+                                context,
+                                options,
+                                roomId,
+                                config.getEnableBackPress()
+                            )
                         } else {
                             Log.d("QiscusMeet", "You haven't participants")
                         }
@@ -108,6 +126,7 @@ class MeetInfo(url: String, typeCaller: QiscusMeet.TypeCaller, config: MeetConfi
         val objectPayload = config.getJwtConfig().getJwtPayload()
 
         objectPayload.put("name", name)
+        objectPayload.put("displayName", name)
         objectPayload.put("room", roomId)
         if (avatar == null) {
             objectPayload.put("avatar", "")
@@ -119,8 +138,9 @@ class MeetInfo(url: String, typeCaller: QiscusMeet.TypeCaller, config: MeetConfi
         val client = OkHttpClient()
         val body: RequestBody = RequestBody.create(JSON, objectPayload.toString())
         val request: Request = Request.Builder()
-            .url("$url:9090/generate_url")
+            .url("$url:5050/generate_url")
             .post(body)
+            .addHeader("Authorization", "Bearer X6tMDYkJF7MVPQ32")
             .addHeader("content-type", "application/json; charset=utf-8")
             .build()
         client.newCall(request).enqueue(object : Callback {
@@ -133,19 +153,78 @@ class MeetInfo(url: String, typeCaller: QiscusMeet.TypeCaller, config: MeetConfi
                 if (BuildConfig.DEBUG && response.body() == null) {
                     error("Assertion failed")
                 }
-                if (response.code()==200){
+                if (response.code() == 200) {
                     val jsonData = response.body()!!.string()
                     try {
                         val jsonObject = JSONObject(jsonData)
                         val token: String = jsonObject["token"] as String
-
-                        call(context, objectPayload.get("appId") as String, token)
+                        call(context, objectPayload.get("app_id") as String, token)
 
                     } catch (e: JSONException) {
                         e.printStackTrace()
                     }
                 } else {
-                    Log.d("FAILED","Response Code: ${response.code()} ${response.message()}")
+                    Log.d("FAILED", "Response Code: ${response.code()} ${response.message()}")
+                }
+            }
+        })
+    }
+
+
+    private fun getServerRecording(
+        appId: String,
+        context: Context,
+        options: JitsiMeetConferenceOptions.Builder
+    ) {
+        val client = OkHttpClient()
+        val request: Request = Request.Builder()
+            .url("$url:5050/api/recordings/${appId}/status")
+            .build()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Timber.d("Failed get jwt")
+            }
+
+            @Throws(IOException::class)
+            override fun onResponse(call: Call, response: Response) {
+                if (response.code() == 200) {
+                    val jsonData = response.body()!!.string()
+                    try {
+                        val jsonObject = JSONObject(jsonData)
+                        val recordingEvent = RecordingEvent()
+                        recordingEvent.status = jsonObject["status"] as String ?: "null"
+                        recordingEvent.total_quota = jsonObject["total_quota"] as Int ?: 0
+                        recordingEvent.remaining_quota = jsonObject["remaining_quota"] as Int ?: 0
+                        QiscusMeetActivity.launchWithRecording(
+                            context,
+                            options.build(),
+                            roomId,
+                            config.getEnableBackPress(),
+                            recordingEvent
+                        )
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
+                    }
+                } else if (response.code() == 400) {
+                    val jsonData = response.body()!!.string()
+                    try {
+                        val jsonObject = JSONObject(jsonData)
+                        val recordingEvent = RecordingEvent()
+                        recordingEvent.message = jsonObject["message"] as String ?: "null"
+                        recordingEvent.status = jsonObject["status"] as String ?: "null"
+                        QiscusMeetActivity.launchWithRecording(
+                            context,
+                            options.build(),
+                            roomId,
+                            config.getEnableBackPress(),
+                            recordingEvent
+                        )
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
+                    }
+                } else {
+                    Log.d("FAILED", "Response Code: ${response.code()} ${response.message()}")
+
                 }
             }
         })
