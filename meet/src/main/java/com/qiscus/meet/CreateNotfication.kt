@@ -51,7 +51,7 @@ class CreateNotfication : Service() {
             this,
             0,
             notificationIntent,
-            0
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) PendingIntent.FLAG_IMMUTABLE else 0
         )
         val notification = NotificationCompat.Builder(this, channelId)
             .setContentTitle("Qiscus Meet Calling")
