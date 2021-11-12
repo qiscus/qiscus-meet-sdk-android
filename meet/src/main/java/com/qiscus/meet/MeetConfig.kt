@@ -11,11 +11,15 @@ class MeetConfig() {
     private var screenSharing: Boolean = false
     private var enableBackPressed: Boolean = false
     private var autoRecording: Boolean = false
+    private var recording: Boolean = false
+
     fun setEnableBackPressed(enableBackPressed: Boolean) =
         apply { this.enableBackPressed = enableBackPressed }
 
     fun setAutoRecording(autoRecording: Boolean) =
         apply { this.autoRecording = autoRecording }
+
+    fun setRecording(recording: Boolean) = apply { this.recording = recording }
 
     fun setScreenSharing(screenSharing: Boolean) = apply { this.screenSharing = screenSharing }
     fun setPassword(password: Boolean) = apply { this.enablePassword = password }
@@ -42,6 +46,8 @@ class MeetConfig() {
     fun getAutoRecording(): Boolean {
         return this.autoRecording
     }
+
+    fun getRecording() = recording
 
     fun getScreenSharing(): Boolean {
         return this.screenSharing
