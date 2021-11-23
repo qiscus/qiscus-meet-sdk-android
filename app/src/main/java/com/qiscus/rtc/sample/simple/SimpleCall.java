@@ -41,6 +41,15 @@ public class SimpleCall extends AppCompatActivity {
         QiscusMeet.config().setAutoRecording(true);
         QiscusMeet.config().setEnableBackPressed(true);
         QiscusMeet.config().setScreenSharing(true);
+        QiscusMeet.config().setRecording(true);
+        QiscusMeet.config().setRaiseHand(true);
+        QiscusMeet.config().setReactions(true); //
+        QiscusMeet.config().setSecurityOptions(true); //
+        QiscusMeet.config().setToolbox(true);
+        QiscusMeet.config().setToolboxAlwaysVisible(true);
+        QiscusMeet.config().setTileView(true);
+        QiscusMeet.config().setParticipantMenu(true);
+        QiscusMeet.config().setVideoMuteButton(true);
         btnStart.setOnClickListener(v -> {
             startCall();
         });
