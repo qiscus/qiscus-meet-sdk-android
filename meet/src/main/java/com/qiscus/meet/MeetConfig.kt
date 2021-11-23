@@ -12,6 +12,14 @@ class MeetConfig() {
     private var enableBackPressed: Boolean = false
     private var autoRecording: Boolean = false
     private var recording: Boolean = false
+    private var reactions: Boolean = false
+    private var raiseHand: Boolean = false
+    private var securityOptions: Boolean = true
+    private var toolbox: Boolean = true
+    private var toolboxAlwaysVisible: Boolean = true
+    private var tileView: Boolean = true
+    private var participantMenu: Boolean = true
+    private var videoMuteButton: Boolean = true
 
     fun setEnableBackPressed(enableBackPressed: Boolean) =
         apply { this.enableBackPressed = enableBackPressed }
@@ -29,6 +37,14 @@ class MeetConfig() {
 
     fun setOverflowMenu(overflowMenu: Boolean) = apply { this.overflowMenu = overflowMenu }
     fun setEnableRoomName(enableRoomName: Boolean) = apply { this.enableRoomName = enableRoomName }
+    fun setReactions(reactionsEnabled: Boolean) = apply { this.reactions = reactionsEnabled }
+    fun setRaiseHand(raiseHandEnabled: Boolean) = apply { this.raiseHand = raiseHandEnabled }
+    fun setSecurityOptions(securityOptionsEnabled: Boolean) = apply { this.securityOptions = securityOptionsEnabled }
+    fun setToolbox(toolboxEnabled: Boolean) = apply { this.toolbox = toolboxEnabled }
+    fun setToolboxAlwaysVisible(toolboxAlwaysVisible: Boolean) = apply { this.toolboxAlwaysVisible = toolboxAlwaysVisible }
+    fun setTileView(tileViewEnabled: Boolean) = apply { this.tileView = tileViewEnabled }
+    fun setParticipantMenu(participantMenuEnabled: Boolean) = apply { this.participantMenu = participantMenuEnabled }
+    fun setVideoMuteButton(videoMuteButtonEnabled: Boolean) = apply { this.videoMuteButton = videoMuteButtonEnabled }
     fun setJwtPayload(jwtPayload: String) = apply { this.jwtPayload = jwtPayload }
 
     fun setJwtConfig(jwtConfig: MeetJwtConfig) = apply {
@@ -76,4 +92,20 @@ class MeetConfig() {
     fun isEnableRoomName(): Boolean {
         return this.enableRoomName
     }
+
+    fun isEnableReactions() = reactions
+
+    fun isEnableRaiseHand() = raiseHand
+
+    fun isEnableSecurityOptions() = securityOptions
+
+    fun isEnableToolbox() = toolbox
+
+    fun toolboxAlwaysVisible() = toolboxAlwaysVisible
+
+    fun isEnableTileView() = tileView
+
+    fun isEnableParticipantMenu() = participantMenu
+
+    fun isEnableVideoMuteButton() = videoMuteButton
 }
