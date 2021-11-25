@@ -64,7 +64,6 @@ class MeetInfo(url: String, typeCaller: QiscusMeet.TypeCaller, config: MeetConfi
                 .setFeatureFlag("meeting-name.enabled", config.isEnableRoomName())
                 .setFeatureFlag("android.screensharing.enabled", config.getScreenSharing())
                 .setFeatureFlag("recording.enabled", config.getRecording())
-                .setFeatureFlag("recording.enabled", config.getRecording())
                 .setFeatureFlag("reactions.enabled", config.isEnableReactions())
                 .setFeatureFlag("raise-hand.enabled", config.isEnableRaiseHand())
                 .setFeatureFlag("security-options.enabled", config.isEnableSecurityOptions())
