@@ -20,6 +20,7 @@ class MeetConfig() {
     private var tileView: Boolean = true
     private var participantMenu: Boolean = true
     private var videoMuteButton: Boolean = true
+    private var audioMuteButton: Boolean = true
 
     fun setEnableBackPressed(enableBackPressed: Boolean) =
         apply { this.enableBackPressed = enableBackPressed }
@@ -45,6 +46,7 @@ class MeetConfig() {
     fun setTileView(tileViewEnabled: Boolean) = apply { this.tileView = tileViewEnabled }
     fun setParticipantMenu(participantMenuEnabled: Boolean) = apply { this.participantMenu = participantMenuEnabled }
     fun setVideoMuteButton(videoMuteButtonEnabled: Boolean) = apply { this.videoMuteButton = videoMuteButtonEnabled }
+    fun setAudioMuteButton(audioMuteButtonEnabled: Boolean) = apply { this.audioMuteButton = audioMuteButtonEnabled }
     fun setJwtPayload(jwtPayload: String) = apply { this.jwtPayload = jwtPayload }
 
     fun setJwtConfig(jwtConfig: MeetJwtConfig) = apply {
@@ -108,4 +110,6 @@ class MeetConfig() {
     fun isEnableParticipantMenu() = participantMenu
 
     fun isEnableVideoMuteButton() = videoMuteButton
+
+    fun isEnableAudioMuteButton() = audioMuteButton
 }
