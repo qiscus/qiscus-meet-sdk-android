@@ -50,6 +50,8 @@ public class SimpleCall extends AppCompatActivity {
         QiscusMeet.config().setTileView(true);
         QiscusMeet.config().setParticipantMenu(true);
         QiscusMeet.config().setVideoMuteButton(true);
+        QiscusMeet.config().setAudioMuteButton(false);
+
         btnStart.setOnClickListener(v -> {
             startCall();
         });
