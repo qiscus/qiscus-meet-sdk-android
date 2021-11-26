@@ -72,6 +72,7 @@ class MeetInfo(url: String, typeCaller: QiscusMeet.TypeCaller, config: MeetConfi
                 .setFeatureFlag("tile-view.enabled", config.isEnableTileView())
                 .setFeatureFlag("participantMenu.enabled", config.isEnableParticipantMenu())
                 .setFeatureFlag("videoMuteButton.enabled", config.isEnableVideoMuteButton())
+                .setFeatureFlag("audioMuteButton.enabled", config.isEnableAudioMuteButton())
                 .setToken(token)
                 .setUserInfo(userInfo)
                 .setVideoMuted(false)
