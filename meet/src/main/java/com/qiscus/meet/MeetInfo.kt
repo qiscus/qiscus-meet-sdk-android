@@ -46,12 +46,8 @@ class MeetInfo(url: String, typeCaller: QiscusMeet.TypeCaller, config: MeetConfi
 
     private fun call(context: Context, appId: String, token: String) {
         if (typeCaller.equals(QiscusMeet.TypeCaller.CALLER)) {
-            val objectPayload = config.getJwtConfig().getJwtPayload()
+//            val objectPayload = config.getJwtConfig().getJwtPayload()
             val roomUrl: String = "$appId/$roomId"
-            val userInfo = JitsiMeetUserInfo()
-            userInfo.avatar = URL(avatar)
-            userInfo.displayName = displayName
-            userInfo.email = objectPayload.get("email").toString()
             val options = JitsiMeetConferenceOptions.Builder()
                 .setRoom(roomUrl)
                 .setAudioMuted(muted)
@@ -74,7 +70,6 @@ class MeetInfo(url: String, typeCaller: QiscusMeet.TypeCaller, config: MeetConfi
                 .setFeatureFlag("videoMuteButton.enabled", config.isEnableVideoMuteButton())
                 .setFeatureFlag("audioMuteButton.enabled", config.isEnableAudioMuteButton())
                 .setToken(token)
-                .setUserInfo(userInfo)
                 .setVideoMuted(false)
             if (config.getAutoRecording()) {
                 options.setFeatureFlag("autoRecording.enabled", config.getAutoRecording())
