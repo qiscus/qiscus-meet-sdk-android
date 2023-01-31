@@ -34,21 +34,21 @@ class QiscusMeetActivity : JitsiMeetActivity() {
         var activity: QiscusMeetActivity? = null
         fun launch(
             context: Context,
-            options: JitsiMeetConferenceOptions?,
+            options: Options?,
             roomid: String,
             enableBackpressed: Boolean
         ) {
             val intent = Intent(context, QiscusMeetActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             intent.action = ACTION_JITSI_MEET_CONFERENCE
-            intent.putExtra(JITSI_MEET_CONFERENCE_OPTIONS, Gson().toJson(options))
+            intent.putExtra(JITSI_MEET_CONFERENCE_OPTIONS, options)
             intent.putExtra(room, roomid)
             intent.putExtra(backpressed, enableBackpressed)
             context.startActivity(intent)
         }
         fun launchWithRecording(
             context: Context,
-            options: JitsiMeetConferenceOptions?,
+            options: Options?,
             roomid: String,
             enableBackpressed: Boolean,
             recordingEvent: RecordingEvent
@@ -56,7 +56,7 @@ class QiscusMeetActivity : JitsiMeetActivity() {
             val intent = Intent(context, QiscusMeetActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             intent.action = ACTION_JITSI_MEET_CONFERENCE
-            intent.putExtra(JITSI_MEET_CONFERENCE_OPTIONS, Gson().toJson(options))
+            intent.putExtra(JITSI_MEET_CONFERENCE_OPTIONS, options)
             intent.putExtra(room, roomid)
             intent.putExtra(backpressed, enableBackpressed)
             intent.putExtra(recording, recordingEvent)
@@ -118,11 +118,32 @@ class QiscusMeetActivity : JitsiMeetActivity() {
     }
 
     override fun initialize() {
-        val meetOptions = Gson().fromJson(
-            intent.getStringExtra(JITSI_MEET_CONFERENCE_OPTIONS),
-            JitsiMeetConferenceOptions::class.java
-        )
-        this.join(meetOptions)
+        val option = intent.getParcelableExtra<Options>(JITSI_MEET_CONFERENCE_OPTIONS)
+        val options = JitsiMeetConferenceOptions.Builder().setRoom(option?.roomURL)
+            .setAudioMuted(option?.audioMuted!!)
+            .setAudioOnly(option.audioOnly)
+            .setFeatureFlag("pip.enabled", option.pipEnabled)
+            .setFeatureFlag("requirepassword.enabled",option.requiredPasswordEnabled)
+            .setFeatureFlag("chat.enabled", option.chatEnabled)
+            .setFeatureFlag("overflow-menu.enabled", option.overFlowMenuEnabled)
+            .setFeatureFlag("videoThumbnail.enabled", option.videoThumbnailEnabled)
+            .setFeatureFlag("meeting-name.enabled", option.meetingNameEnabled)
+            .setFeatureFlag("android.screensharing.enabled", option.androidScreenSharingEnabled)
+            .setFeatureFlag("recording.enabled", option.recordingEnabled)
+            .setFeatureFlag("reactions.enabled", option.reactionsEnabled)
+            .setFeatureFlag("raise-hand.enabled", option.raiseHandEnabled)
+            .setFeatureFlag("security-options.enabled", option.securityOptionsEnabled)
+            .setFeatureFlag("toolbox.enabled", option.toolboxEnabled)
+            .setFeatureFlag("toolbox.alwaysVisible", option.toolboxAlwaysVisible)
+            .setFeatureFlag("tile-view.enabled", option.tileViewEnabled)
+            .setFeatureFlag("participantMenu.enabled", option.participantMenuEnabled)
+            .setFeatureFlag("videoMuteButton.enabled", option.videoMuteButtonEnabled)
+            .setFeatureFlag("audioMuteButton.enabled", option.audioMuteButtonEnabled)
+            .setToken(option.token)
+            .setVideoMuted(option.videoMuted)
+            options.setFeatureFlag("autoRecording.enabled", option.autoRecordingEnabled)
+
+        this.join(options.build())
     }
 
     override fun onConferenceTerminated(extraData: HashMap<String, Any>?) {
