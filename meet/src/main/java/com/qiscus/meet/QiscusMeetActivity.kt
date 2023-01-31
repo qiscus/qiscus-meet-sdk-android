@@ -119,7 +119,8 @@ class QiscusMeetActivity : JitsiMeetActivity() {
 
     override fun initialize() {
         val option = intent.getParcelableExtra<Options>(JITSI_MEET_CONFERENCE_OPTIONS)
-        val options = JitsiMeetConferenceOptions.Builder().setRoom(option?.roomURL)
+        val options = JitsiMeetConferenceOptions.Builder()
+            .setRoom(option?.roomURL)
             .setAudioMuted(option?.audioMuted!!)
             .setAudioOnly(option.audioOnly)
             .setFeatureFlag("pip.enabled", option.pipEnabled)
@@ -141,7 +142,7 @@ class QiscusMeetActivity : JitsiMeetActivity() {
             .setFeatureFlag("audioMuteButton.enabled", option.audioMuteButtonEnabled)
             .setToken(option.token)
             .setVideoMuted(option.videoMuted)
-            options.setFeatureFlag("autoRecording.enabled", option.autoRecordingEnabled)
+            .setFeatureFlag("autoRecording.enabled", option.autoRecordingEnabled)
 
         this.join(options.build())
     }
