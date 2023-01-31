@@ -29,6 +29,7 @@ class MeetInfo(url: String, typeCaller: QiscusMeet.TypeCaller, config: MeetConfi
     private var typeCaller: QiscusMeet.TypeCaller = typeCaller
     private var muted: Boolean = false
     private var config: MeetConfig = config
+     var options = Options()
     fun setRoomId(roomId: String) = apply { this.roomId = roomId }
 
     fun setTypeCall(type: QiscusMeet.Type) = apply { this.type = type }
@@ -48,36 +49,35 @@ class MeetInfo(url: String, typeCaller: QiscusMeet.TypeCaller, config: MeetConfi
         if (typeCaller.equals(QiscusMeet.TypeCaller.CALLER)) {
 //            val objectPayload = config.getJwtConfig().getJwtPayload()
             val roomUrl: String = "$appId/$roomId"
-            val options = JitsiMeetConferenceOptions.Builder()
-                .setRoom(roomUrl)
-                .setAudioMuted(muted)
-                .setAudioOnly(type == QiscusMeet.Type.VOICE || type == QiscusMeet.Type.CONFERENCE)
-                .setFeatureFlag("pip.enabled", true)
-                .setFeatureFlag("requirepassword.enabled", config.getPassword())
-                .setFeatureFlag("chat.enabled", config.getChat())
-                .setFeatureFlag("overflow-menu.enabled", config.getOverflowMenu())
-                .setFeatureFlag("videoThumbnail.enabled", config.getVideoThumbnailsOn())
-                .setFeatureFlag("meeting-name.enabled", config.isEnableRoomName())
-                .setFeatureFlag("android.screensharing.enabled", config.getScreenSharing())
-                .setFeatureFlag("recording.enabled", config.getRecording())
-                .setFeatureFlag("reactions.enabled", config.isEnableReactions())
-                .setFeatureFlag("raise-hand.enabled", config.isEnableRaiseHand())
-                .setFeatureFlag("security-options.enabled", config.isEnableSecurityOptions())
-                .setFeatureFlag("toolbox.enabled", config.isEnableToolbox())
-                .setFeatureFlag("toolbox.alwaysVisible", config.toolboxAlwaysVisible())
-                .setFeatureFlag("tile-view.enabled", config.isEnableTileView())
-                .setFeatureFlag("participantMenu.enabled", config.isEnableParticipantMenu())
-                .setFeatureFlag("videoMuteButton.enabled", config.isEnableVideoMuteButton())
-                .setFeatureFlag("audioMuteButton.enabled", config.isEnableAudioMuteButton())
-                .setToken(token)
-                .setVideoMuted(false)
+
+            options.roomURL = roomUrl
+            options.audioMuted = muted
+            options.audioOnly = type == QiscusMeet.Type.VOICE || type == QiscusMeet.Type.CONFERENCE
+            options.pipEnabled = true
+            options.requiredPasswordEnabled = config.getPassword()
+            options.chatEnabled = config.getChat()
+            options.overFlowMenuEnabled = config.getOverflowMenu()
+            options.videoThumbnailEnabled = config.getVideoThumbnailsOn()
+            options.meetingNameEnabled = config.isEnableRoomName()
+            options.androidScreenSharingEnabled = config.getScreenSharing()
+            options.recordingEnabled = config.getRecording()
+            options.reactionsEnabled = config.isEnableReactions()
+            options.raiseHandEnabled = config.isEnableRaiseHand()
+            options.securityOptionsEnabled = config.isEnableSecurityOptions()
+            options.toolboxEnabled = config.isEnableToolbox()
+            options.toolboxAlwaysVisible = config.isEnableTileView()
+            options.participantMenuEnabled = config.isEnableParticipantMenu()
+            options.videoMuteButtonEnabled = config.isEnableVideoMuteButton()
+            options.audioMuteButtonEnabled = config.isEnableAudioMuteButton()
+            options.token = token
+            options.videoMuted = false
             if (config.getAutoRecording()) {
-                options.setFeatureFlag("autoRecording.enabled", config.getAutoRecording())
+                options.autoRecordingEnabled = config.getAutoRecording()
                 getServerRecording(appId, context, options)
             } else {
                 QiscusMeetActivity.launch(
                     context,
-                    options.build(),
+                    options,
                     roomUrl,
                     config.getEnableBackPress()
                 )
@@ -101,12 +101,10 @@ class MeetInfo(url: String, typeCaller: QiscusMeet.TypeCaller, config: MeetConfi
                         val totalParticipants: Int = jsonObject["participants"] as Int
 
                         if (totalParticipants > 0) {
-                            val options = JitsiMeetConferenceOptions.Builder()
-                                .setRoom(roomId)
-                                .setVideoMuted(false)
-                                .setAudioOnly(type == QiscusMeet.Type.VOICE)
-                                .setToken(token)
-                                .build()
+                            options.roomURL = roomId
+                            options.videoMuted = false
+                            options.audioOnly = type == QiscusMeet.Type.VOICE
+                            options.token = token
                             QiscusMeetActivity.launch(
                                 context,
                                 options,
@@ -179,7 +177,7 @@ class MeetInfo(url: String, typeCaller: QiscusMeet.TypeCaller, config: MeetConfi
     private fun getServerRecording(
         appId: String,
         context: Context,
-        options: JitsiMeetConferenceOptions.Builder
+        options: Options
     ) {
         val client = OkHttpClient()
         val request: Request = Request.Builder()
@@ -202,7 +200,7 @@ class MeetInfo(url: String, typeCaller: QiscusMeet.TypeCaller, config: MeetConfi
                         recordingEvent.remaining_quota = jsonObject["remaining_quota"] as Int ?: 0
                         QiscusMeetActivity.launchWithRecording(
                             context,
-                            options.build(),
+                            options,
                             roomId,
                             config.getEnableBackPress(),
                             recordingEvent
@@ -219,7 +217,7 @@ class MeetInfo(url: String, typeCaller: QiscusMeet.TypeCaller, config: MeetConfi
                         recordingEvent.status = jsonObject["status"] as String ?: "null"
                         QiscusMeetActivity.launchWithRecording(
                             context,
-                            options.build(),
+                            options,
                             roomId,
                             config.getEnableBackPress(),
                             recordingEvent
