@@ -34,7 +34,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 //    implementation 'com.qiscus.sdk:chat:2.30.16'
-    implementation ('com.qiscus.meet:meet-sdk:2.5.4'){ transitive = true }
+//    implementation ('com.qiscus.meet:meet-sdk:2.5.4'){ transitive = true }
     //implementation 'com.qiscus.meet:meet-sdk:2.0.2'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'org.greenrobot:eventbus:3.2.0'
@@ -44,5 +44,5 @@ dependencies {
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation "com.squareup.retrofit2:converter-gson:2.9.0"
-//    implementation project(':meet')
+    implementation project(':meet')
 }
